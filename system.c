@@ -1,6 +1,8 @@
-
+#include <stdio.h>
 #include <stdlib.h>
 #include <GL/glut.h>
+#include <math.h>
+#include "system.h"
 
 void xyzAxes(double length)
 {
@@ -31,12 +33,10 @@ void myReshape(int width, int height)
 	gluPerspective(60.0, (double)width / (double)height, 0.1, 20.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslated(0.0, 0.0, -5.0);		// move teapot
+	glTranslated(0.0, 0.0, -5.0);  // move teapot
 }
 
-void polarView(double posX, double posY, double posZ, double distance, 
-	                  double twist, double elevation, double azimuth)
-{
+void polarView(double posX, double posY, double posZ, double distance, double twist, double elevation, double azimuth) {
 	/*
 	pos[XYZ]: カメラの座標
 	distance: 回転軸との距離
@@ -47,4 +47,43 @@ void polarView(double posX, double posY, double posZ, double distance,
 	glTranslated(posX, posY, posZ);
 }
 
+void exchange(double* a, double* b){
+	double tmp;
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+double distance(double v0, double a, double t){
+	return (v0*t + 0.5*a*t*t);
+}
+
+double velocity(double v0, double a, double t){
+	return (v0 + a*t);
+}
+
+double acceleration(double gravity, double theta){
+	return (gravity*sin(theta));
+}
+
+double theta(double x1, double y1, double x2, double y2){
+	// 0 <= theta <= PI [rad]
+	double theta = 0;
+
+	// 角(x1, y1)がシータにする
+	if(fabs(x2) < fabs(x1) && y2 < y1){
+		printf("change\n");
+		exchange(&x1, &x2);
+		exchange(&y1, &y2);
+	}
+
+	x2 -= x1;  // (x1, y1) = O に移動
+	y2 -= y1;  // (x1, y1) = O に移動
+	printf("(%f, %f)\n", x2, y2);
+	return atan2(y2, x2);
+}
+
+double toDegree(double rad){
+	return (rad * 180.0 / PI);
+}
 
