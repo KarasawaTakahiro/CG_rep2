@@ -1,8 +1,6 @@
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <GL/glut.h>
-#include <math.h>
-#include "system.h"
 
 void xyzAxes(double length)
 {
@@ -27,6 +25,7 @@ void myInit(char *progname)
 
 void myReshape(int width, int height)
 {
+<<<<<<< HEAD
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -87,4 +86,28 @@ double theta(double x1, double y1, double x2, double y2){
 double toDegree(double rad){
     return (rad * 180.0 / PI);
 }
+=======
+	glViewport(0, 0, width, height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60.0, (double)width / (double)height, 0.1, 20.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslated(0.0, 0.0, -5.0);		// move teapot
+}
+
+void polarView(double posX, double posY, double posZ, double distance, 
+	                  double twist, double elevation, double azimuth)
+{
+	/*
+	pos[XYZ]: ƒJƒƒ‰‚ÌÀ•W
+	distance: ‰ñ“]Ž²‚Æ‚Ì‹——£
+	*/
+	glRotated(-twist,      0.0, 0.0, 1.0);  // zŽ²‚Ì‰ñ“]
+	glRotated(-azimuth,  0.0, 1.0, 0.0);  // y
+	glRotated(-elevation, 1.0, 0.0, 0.0);  // x
+	glTranslated(posX, posY, posZ);
+}
+
+>>>>>>> parent of a308d40... add CDLine
 

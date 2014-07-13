@@ -1,6 +1,3 @@
 *.vcxproj*
 Debug/*
-*.exe
-*.obj
-*test*
 
