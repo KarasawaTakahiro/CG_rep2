@@ -155,7 +155,6 @@ int createMarble(double x, double y, double z, double r, double g, double b){
 }
 
 void updateMarblePos(marble_t* marble){
-<<<<<<< HEAD
     // ビー玉の座標の更新
     //x = v0t + 0.5at^2
 
@@ -183,33 +182,6 @@ void updateMarbles(){
         marble->vy = velocity(marble->vy, marble->ay, 1.0);
         updateMarblePos(marble);
     }
-=======
-	// ビー玉の座標の更新
-	//x = v0t + 0.5at^2
-
-	marble->x += marble->vx + 0.5 * marble->ax;
-	marble->y += marble->vy + 0.5 * marble->ay;
-	marble->z += marble->vz + 0.5 * marble->az;
-	if(marble->y < 0){
-		marble->y = marble->radius;
-	} 
-	if(fabs(marble->y - marble->radius) < 0.1){
-		marble->vy = marble->vy * field.e;
-	}
-}
-
-void updateMarbles(){
-	// ビー玉の更新
-	int i;
-	marble_t* marble;
-
-	for(i=0; i<marbleNum; i++){
-		marble = (marble_t*)marbles[i];
-		marble->ay = -GRAVITY;
-		marble->vy = marble->vy + 1 * marble->ay;
-		updateMarblePos(marble);
-	}
->>>>>>> parent of a308d40... add CDLine
 }
 
 void drawMarbles(){
@@ -274,11 +246,7 @@ void drawBlocks(){
     for(i=0; i<blockNum; i++){
         block = blocks[i];
         glPushMatrix();
-<<<<<<< HEAD
-        // テストバージョン
-=======
             // テストバージョン
->>>>>>> parent of a308d40... add CDLine
             glTranslated(0.0, 3.0, 0.0);
             glRotated(-30.0, 0.0, 0.0, 1.0);
             glTranslated(-1.0, 0.0, 1.0);
@@ -290,7 +258,6 @@ void drawBlocks(){
 
 void myDisplay()
 {
-<<<<<<< HEAD
     glClear(GL_COLOR_BUFFER_BIT
             | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -308,25 +275,6 @@ void myDisplay()
     movePosition();
     glDisable(GL_DEPTH_TEST);
     glutSwapBuffers();
-=======
-	glClear(GL_COLOR_BUFFER_BIT
-              | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-	xyzAxes(100.0);
-
-	glPushMatrix();
-		glColor3d(1.0, 0.0, 0.0);
-		//glutWireTeapot(1.0);
-		drawMarbles();
-        drawBlocks();
-		drawField();
-	glPopMatrix();
-
-	// 必須
-	movePosition();
-	glDisable(GL_DEPTH_TEST);
-	glutSwapBuffers();
->>>>>>> parent of a308d40... add CDLine
 }
 
 void myTimer(int value)
@@ -405,4 +353,4 @@ int main(int argc, char** argv)
 
     glutMainLoop();
     return 0;
-}
+

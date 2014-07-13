@@ -48,7 +48,6 @@ typedef struct{
 void xyzAxes(double length);
 void myInit(char *progname);
 void myReshape(int width, int height);
-<<<<<<< HEAD
 void polarView(double posX, double posY, double posZ, double distance, double twist, double elevation, double azimuth);
 void exchange(double* a, double* b);
 double displacement(double v0, double a, double t);
@@ -56,7 +55,5 @@ double velocity(double v0, double a, double t);
 double acceleration(double theta);
 double theta(double x1, double y1, double x2, double y2);
 double toDegree(double rad);
-=======
 void polarView(double distance, double twist, double elevation, double azimuth);
->>>>>>> parent of a308d40... add CDLine
 
