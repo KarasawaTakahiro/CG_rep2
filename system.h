@@ -60,8 +60,9 @@ void myInit(char *progname);
 void myReshape(int width, int height);
 void polarView(double posX, double posY, double posZ, double distance, double twist, double elevation, double azimuth);
 void exchange(double* a, double* b);
-double distance(double v0, double a, double t);
+double displacement(double v0, double a, double t);
 double velocity(double v0, double a, double t);
-double acceleration(double gravity, double theta);
+double acceleration(double theta);
 double theta(double x1, double y1, double x2, double y2);
 double toDegree(double rad);
+

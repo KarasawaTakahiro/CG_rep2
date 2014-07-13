@@ -159,9 +159,9 @@ void updateMarblePos(marble_t* marble){
     // ビー玉の座標の更新
     //x = v0t + 0.5at^2
 
-    marble->x += marble->vx + 0.5 * marble->ax;
-    marble->y += marble->vy + 0.5 * marble->ay;
-    marble->z += marble->vz + 0.5 * marble->az;
+    marble->x += displacement(marble->vx, marble->ax, 1.0);
+    marble->y += displacement(marble->vy, marble->ay, 1.0);
+    marble->z += displacement(marble->vz, marble->az, 1.0);
     if(marble->y < 0){
         marble->y = marble->radius;
     } 
@@ -177,8 +177,10 @@ void updateMarbles(){
 
     for(i=0; i<marbleNum; i++){
         marble = (marble_t*)marbles[i];
-        marble->ay = -GRAVITY;
-        marble->vy = marble->vy + 1 * marble->ay;
+
+
+        marble->ay = acceleration(90.0);
+        marble->vy = velocity(marble->vy, marble->ay, 1.0);
         updateMarblePos(marble);
     }
 }
@@ -245,11 +247,11 @@ void drawBlocks(){
         block = blocks[i];
         glPushMatrix();
         // テストバージョン
-        glTranslated(0.0, 3.0, 0.0);
-        glRotated(-30.0, 0.0, 0.0, 1.0);
-        glTranslated(-1.0, 0.0, 1.0);
-        glRotated(-90.0, 1.0, 0.0, 0.0);
-        glRectd(0.0, 0.0, 2.0, 2.0);
+            glTranslated(0.0, 3.0, 0.0);
+            glRotated(-30.0, 0.0, 0.0, 1.0);
+            glTranslated(-1.0, 0.0, 1.0);
+            glRotated(-90.0, 1.0, 0.0, 0.0);
+            glRectd(0.0, 0.0, 2.0, 2.0);
         glPopMatrix();
     }
 }
@@ -262,11 +264,11 @@ void myDisplay()
     xyzAxes(100.0);
 
     glPushMatrix();
-    glColor3d(1.0, 0.0, 0.0);
-    //glutWireTeapot(1.0);
-    drawMarbles();
-    drawBlocks();
-    drawField();
+        glColor3d(1.0, 0.0, 0.0);
+        //glutWireTeapot(1.0);
+        drawMarbles();
+        drawBlocks();
+        drawField();
     glPopMatrix();
 
     // 必須
