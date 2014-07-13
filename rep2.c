@@ -258,23 +258,23 @@ void drawBlocks(){
 
 void myDisplay()
 {
-    glClear(GL_COLOR_BUFFER_BIT
-            | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    xyzAxes(100.0);
+	glClear(GL_COLOR_BUFFER_BIT
+              | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	xyzAxes(100.0);
 
-    glPushMatrix();
-        glColor3d(1.0, 0.0, 0.0);
-        //glutWireTeapot(1.0);
-        drawMarbles();
+	glPushMatrix();
+		glColor3d(1.0, 0.0, 0.0);
+		//glutWireTeapot(1.0);
+		drawMarbles();
         drawBlocks();
-        drawField();
-    glPopMatrix();
+		drawField();
+	glPopMatrix();
 
-    // ïKê{
-    movePosition();
-    glDisable(GL_DEPTH_TEST);
-    glutSwapBuffers();
+	// ïKê{
+	movePosition();
+	glDisable(GL_DEPTH_TEST);
+	glutSwapBuffers();
 }
 
 void myTimer(int value)
