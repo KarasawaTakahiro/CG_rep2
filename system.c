@@ -1,6 +1,7 @@
-
+#include <math.h>
 #include <stdlib.h>
 #include <GL/glut.h>
+#include "system.h"
 
 void xyzAxes(double length)
 {
@@ -84,18 +85,5 @@ double theta(double x1, double y1, double x2, double y2){
 
 double toDegree(double rad){
     return (rad * 180.0 / PI);
-}
-
-void polarView(double posX, double posY, double posZ, double distance, 
-        double twist, double elevation, double azimuth)
-{
-    /*
-      pos[XYZ]: ƒJƒƒ‰‚ÌÀ•W
-distance: ‰ñ“]²‚Æ‚Ì‹——£
-     */
-    glRotated(-twist,      0.0, 0.0, 1.0);  // z²‚Ì‰ñ“]
-    glRotated(-azimuth,  0.0, 1.0, 0.0);  // y
-    glRotated(-elevation, 1.0, 0.0, 0.0);  // x
-    glTranslated(posX, posY, posZ);
 }
 
