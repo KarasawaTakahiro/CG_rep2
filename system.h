@@ -16,6 +16,7 @@ typedef struct {
 
 // physics
 #define GRAVITY 1.0  //9.8
+#define PI 3.14
 /*
 	v = v0 + at
 	x = v0t + 0.5at^2
@@ -54,5 +55,4 @@ double velocity(double v0, double a, double t);
 double acceleration(double theta);
 double theta(double x1, double y1, double x2, double y2);
 double toDegree(double rad);
-void polarView(double distance, double twist, double elevation, double azimuth);
 
