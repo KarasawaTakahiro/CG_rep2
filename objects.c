@@ -70,27 +70,37 @@ int blkid = 1;
     複数のモデルデータを読み込めるようにする
     newblock()にモデルデータを表す定数を渡して、ブロックの領域を定義する
 */
-block_t* newBlock(int modelType){
+block_t* newBlock(int modelType, double scale){
     /*
        メタセコイアでのモデルデータを読み込む
+       height, width, depth, model, collisionlines, collisionlinesNumは各々のload*関数で定義する
+       load*関数を呼ぶ前にx, y, zに代入しておくこと
      */
-    block_t* block = (block_t*)malloc(sizeof(block_t));
+    block_t* block;
+    if((block = (block_t*)malloc(sizeof(block_t))) == NULL){
+        return NULL;
+    }
     block->id = blkid ++;
     block->x = 0.0;
     block->y = 0.0;
     block->z = 0.0;
+    block->e = 0.1;
+    block->shown = BLOCK_SHOW;
+    switch(modelType){
+        case MODEL_TYPE_POST:
+            loadPost(block, scale);
+            break;
+        default:
+            free(block);
+            return NULL;
+    }
     block->height = 2.0;
     block->width = 2.0;
     block->depth = 2.0;
-    block->e = 0.1;
-    block->model = mqoCreateModel(path, 0.02);
-    block->shown = BLOCK_SHOW;
-    block->collisionlines = NULL;
-    block->collisionlinesNum = 0;
     return block;
 }
 
-int createBlock(block_t*** blocks, int *blocksNum, int modelType, double x, double y, double z){
+int createBlock(block_t*** blocks, int *blocksNum, int modelType, double x, double y, double z, double scale){
     /*
         ブロックを作成して配列に追加する
         blocks : ブロックを保持する配列
@@ -117,7 +127,7 @@ int createBlock(block_t*** blocks, int *blocksNum, int modelType, double x, doub
     
     // 要素の領域を確保して配列に入れる
     if(ensure){
-        if((tmp = newBlock(modelType)) != NULL){  // 領域を確保
+        if((tmp = newBlock(modelType, scale)) != NULL){  // 領域を確保
             tmp->x = x; tmp->y = y; tmp->z = z;  // パラメータを代入
             tmpA[num] = tmp;
             num ++;
@@ -141,6 +151,7 @@ void freeBlocks(block_t** blks, int num){
     }
 }
 
+// モデルの描画関数
 void callModel(block_t* block){
     mqoCallModel(block->model);
 }
@@ -151,7 +162,7 @@ void deleteModel(block_t* block){
 }
 
 // あたり判定用の線
-collisionline_t* newCollisionline(sx, sy, sz, ex, ey, ez){
+collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, double ey, double ez){
     collisionline_t* line = (collisionline_t*) malloc(sizeof(collisionline_t));
     line->sx = sx;
     line->sy = sy;
@@ -190,14 +201,23 @@ int addCollisionline(block_t** block, collisionline_t* cl){
 }
 
 /*
-    各モデルを読み込む関数群
-*/
+   各モデルを読み込む関数群
+ */
 void loadPost(block_t* block, double scale){
-    block->* scale;
-    block->* scale;
-    block->* scale;
-    block->* scale;
-    block->* scale;
+    collisionline_t* cl;
+    int theta;
+    double x, z;  // シータの時のx,z座標
+    block->height = POST_HEIGHT * scale;
+    block->width = POST_WIDTH * scale;
+    block->depth = POST_WIDTH * scale;
+    //block->model = mqoCreateModel(POST_PATH, scale);
+    block->model = mqoCreateModel("post_2.mqo", scale);
+    for(theta=0; theta<=360; theta+=45){  // あたり判定用の線を定義して追加する
+        x = (POST_INTERNAL_RADIUS * scale) * cos(theta);
+        z = (POST_INTERNAL_RADIUS * scale) * sin(theta);
+        cl = newCollisionline(x, block->y, z, x, block->y+POST_HEIGHT, z);
+        addCollisionline(&block, cl);
+    }
 }
 
 

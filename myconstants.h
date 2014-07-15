@@ -1,9 +1,15 @@
 
+#define MARBLE_SIZE 1.0
+#define MARBLE_MAX_NUM 10
+
+#define BLOCK_SHOW 1
+#define BLOCK_HIDE 0
+
 /*
     ƒ‚ƒfƒ‹‚Ìí—Ş‚ğ¦‚·’è”
 */
 #define MODEL_TYPE_POST 100
-#define MODEL_TYPE_STRAIGHT 101
+//#define MODEL_TYPE_STRAIGHT 101
 
 
 /*

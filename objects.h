@@ -1,11 +1,13 @@
+#ifndef OBJECTS
+#define OBJECTS
+
 #include "GLMetaseq.h"
 #include "myconstants.h"
 
 /*
-    ビー玉の定義
+    構造体の定義
 */
-#define MARBLE_SIZE 1.0
-#define MARBLE_MAX_NUM 10
+// ビー玉の定義
 
 typedef struct {
     double x, y, z;  // 座標
@@ -16,26 +18,13 @@ typedef struct {
     int id;
 } marble_t;
 
-marble_t* newMarble(double x, double y, double z, double r, double g, double b);
-int createMarble(marble_t*** marbles, int* marbleNum, double x, double y, double z, double r, double g, double b);
-void freeMarbles(marble_t** marbles, int num);
-
-/*
-    あたり判定用の線
-*/
+// あたり判定用の線
 typedef struct {
     double sx, sy, sz;  // 始点座標
     double ex, ey, ez;  // 終点座標
 } collisionline_t;
 
-collisionline_t* newCollisionline(sx, sy, sz, ex, ey, ez);
-
-/* 
-    ブロックの定義
-*/
-#define BLOCK_SHOW 1
-#define BLOCK_HIDE 0
-
+// ブロックの定義
 typedef struct{
     int id;
     double x, y, z;  // 座標
@@ -47,9 +36,24 @@ typedef struct{
     int collisionlinesNum;
 } block_t;
 
-block_t* newBlock(char* path);
-int createBlock(block_t*** blocks, int *blocksNum, char* path, double x, double y, double z);
+/*
+    プロトタイプ宣言
+ */
+// ビー玉
+marble_t* newMarble(double x, double y, double z, double r, double g, double b);
+int createMarble(marble_t*** marbles, int* marbleNum, double x, double y, double z, double r, double g, double b);
+void freeMarbles(marble_t** marbles, int num);
+// ブロック
+block_t* newBlock(int modelType, double scale);
+int createBlock(block_t*** blocks, int *blocksNum, int modelType, 
+                double x, double y, double z, double scale);
 void freeBlocks(block_t** blks, int num);
+// コリジョンライン
+collisionline_t* newCollisionline(sx, sy, sz, ex, ey, ez);
+int addCollisionline(block_t** block, collisionline_t* cl);
+// モデル
 void callModel(block_t* block);
 void deleteModel(block_t* block);
+void loadPost(block_t* block, double scale);
 
+#endif

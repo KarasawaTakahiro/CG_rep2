@@ -3,6 +3,7 @@
 #include <math.h>
 #include "system.h"
 #include "objects.h"
+#include "myconstants.h"
 
 // Ž‹“_
 double posX=0.0, posY=0.0, posZ=0.0;
@@ -60,7 +61,7 @@ void myKeyboard(unsigned char key, int x, int y) {
             createMarble(&marbles, &marbleNum, 0.0, 10.0, 0.0, 0.0, 0.0, 1.0);
             break;
         case 'b':
-            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 5.0, 0.0));
+            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 5.0, 0.0, 0.2));
             break;
         default:
             vector[0] = vector[1] = vector[2] = 0.0;
@@ -228,13 +229,14 @@ void myTimer(int value)
 }
 
 void blockInit(){
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "straight_2.mqo", 0.0, 0.0, 0.0));
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 2.0, 0.0));
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 4.0, 0.0));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 0.0, 0.2));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 2.0, 0.0, 0.2));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 4.0, 0.0, 0.2));
 }
 
 int main(int argc, char** argv)
 {
+    /*
     glutInit(&argc, argv);
     myInit(argv[0]);
     glutKeyboardFunc(myKeyboard);
@@ -249,6 +251,12 @@ int main(int argc, char** argv)
     blockInit();
 
     glutMainLoop();
+    */
+    
+    // test
+    mqoInit();
+    createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 0.0, 0.2);
+
     return 0;
 }
 
