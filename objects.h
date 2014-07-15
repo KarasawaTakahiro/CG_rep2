@@ -1,4 +1,5 @@
 #include "GLMetaseq.h"
+#include "myconstants.h"
 
 /*
     ビー玉の定義

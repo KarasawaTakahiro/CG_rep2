@@ -66,8 +66,11 @@ void freeMarbles(marble_t** marbles, int num){
 
 // ブロックの定義
 int blkid = 1;
-
-block_t* newBlock(char* path){
+/*
+    複数のモデルデータを読み込めるようにする
+    newblock()にモデルデータを表す定数を渡して、ブロックの領域を定義する
+*/
+block_t* newBlock(int modelType){
     /*
        メタセコイアでのモデルデータを読み込む
      */
@@ -87,7 +90,7 @@ block_t* newBlock(char* path){
     return block;
 }
 
-int createBlock(block_t*** blocks, int *blocksNum, char* path, double x, double y, double z){
+int createBlock(block_t*** blocks, int *blocksNum, int modelType, double x, double y, double z){
     /*
         ブロックを作成して配列に追加する
         blocks : ブロックを保持する配列
@@ -114,7 +117,7 @@ int createBlock(block_t*** blocks, int *blocksNum, char* path, double x, double 
     
     // 要素の領域を確保して配列に入れる
     if(ensure){
-        if((tmp = newBlock(path)) != NULL){  // 領域を確保
+        if((tmp = newBlock(modelType)) != NULL){  // 領域を確保
             tmp->x = x; tmp->y = y; tmp->z = z;  // パラメータを代入
             tmpA[num] = tmp;
             num ++;
@@ -185,4 +188,21 @@ int addCollisionline(block_t** block, collisionline_t* cl){
 
     return res;
 }
+
+/*
+    各モデルを読み込む関数群
+*/
+void loadPost(block_t* block, double scale){
+    block->* scale;
+    block->* scale;
+    block->* scale;
+    block->* scale;
+    block->* scale;
+}
+
+
+
+
+
+
 

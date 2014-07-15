@@ -31,7 +31,6 @@ int blockNum = 0;
 void rotatePosition(double side, double updown);
 
 void myKeyboard(unsigned char key, int x, int y) {
-    if ( key == 27 ) exit (0);
     switch(key){
         case '27':
             freeMarbles(marbles, marbleNum);
@@ -61,9 +60,6 @@ void myKeyboard(unsigned char key, int x, int y) {
             createMarble(&marbles, &marbleNum, 0.0, 10.0, 0.0, 0.0, 0.0, 1.0);
             break;
         case 'b':
-            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 5.0, 0.0));
-            break;
-        case 'v':
             printf("createBlk: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 5.0, 0.0));
             break;
         default:
@@ -232,7 +228,7 @@ void myTimer(int value)
 }
 
 void blockInit(){
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 0.0, 0.0));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "straight_2.mqo", 0.0, 0.0, 0.0));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 2.0, 0.0));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 4.0, 0.0));
 }
