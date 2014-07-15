@@ -1,4 +1,4 @@
-#include <>
+#include "GLMetaseq.h"
 
 /*
     ビー玉の定義
@@ -21,14 +21,21 @@ void freeMarbles(marble_t** marbles, int num);
 /* 
     ブロックの定義
 */
+#define BLOCK_SHOW 1
+#define BLOCK_HIDE 0
 
 typedef struct{
+    int id;
     double x, y, z;  // 座標
     double height, width, depth;  // サイズ
     double e;  // ビー玉との反発係数
+    MQO_MODEL model;
+    int shown;
 } block_t;
 
 block_t* newBlock(char* path);
 int createBlock(block_t*** blocks, int *blocksNum, char* path, double x, double y, double z);
 void freeBlocks(block_t** blks, int num);
+void callModel(block_t* block);
+void deleteModel(block_t* block);
 

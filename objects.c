@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "system.h"
 #include "objects.h"
+#include "GLMetaseq.h"
 
 // ビー玉の定義
 marble_t* newMarble(double x, double y, double z, double r, double g, double b){
@@ -61,12 +62,14 @@ void freeMarbles(marble_t** marbles, int num){
 }
 
 // ブロックの定義
+int id = 0;
 
 block_t* newBlock(char* path){
     /*
        メタセコイアでのモデルデータを読み込む
      */
     block_t* block = (block_t*)malloc(sizeof(block_t));
+    block->id = ++id;
     block->x = -1.0;
     block->y = 4.0;
     block->z = -1.0;
@@ -74,6 +77,8 @@ block_t* newBlock(char* path){
     block->width = 2.0;
     block->depth = 2.0;
     block->e = 0.1;
+    block->model = mqoCreateModel(path, 0.02);
+    block->shown = BLOCK_SHOW;
     return block;
 }
 
@@ -119,7 +124,19 @@ void freeBlocks(block_t** blks, int num){
     */
     int i;
     for(i=0; i<num; i++){
+        deleteModel(blks[i]);
         free(blks[i]);
     }
 }
+
+void callModel(block_t* block){
+    mqoCallModel(block->model);
+}
+
+void deleteModel(block_t* block){
+    mqoDeleteModel(block->model);
+    block->shown = 0;
+}
+
+
 

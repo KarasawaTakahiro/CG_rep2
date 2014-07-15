@@ -1,6 +1,7 @@
 
 #define __GLMETASEQ_C__
 #include "GLMetaseq.h"
+#include <stdio.h>
 
 /*
 

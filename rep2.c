@@ -36,6 +36,7 @@ void myKeyboard(unsigned char key, int x, int y) {
         case '27':
             freeMarbles(marbles, marbleNum);
             freeBlocks(blocks, blockNum);
+            mqoCleanup();
             exit(0);
             break;
         case 'w':
@@ -60,6 +61,9 @@ void myKeyboard(unsigned char key, int x, int y) {
             createMarble(&marbles, &marbleNum, 0.0, 10.0, 0.0, 0.0, 0.0, 1.0);
             break;
         case 'b':
+            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 5.0, 0.0));
+            break;
+        case 'v':
             printf("createBlk: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 5.0, 0.0));
             break;
         default:
@@ -180,9 +184,18 @@ void drawField(){
     glPopMatrix();
 }
 
-void drawBlocks(){
+void drawBlocks(block_t** blks, int num){
     int i;
     block_t* block;
+    for(i=0; i<num; i++){
+        block = blks[i];
+        if(block->shown == BLOCK_SHOW){
+            glPushMatrix();
+                glTranslated(block->x, block->y, block->z);
+                callModel(block);
+            glPopMatrix();
+        }
+    }
 }
 
 void myDisplay()
@@ -196,7 +209,7 @@ void myDisplay()
     glColor3d(1.0, 0.0, 0.0);
     //glutWireTeapot(1.0);
     drawMarbles(marbles, marbleNum);
-    drawBlocks();
+    drawBlocks(blocks, blockNum);
     drawField();
     glPopMatrix();
 
@@ -230,6 +243,7 @@ int main(int argc, char** argv)
     glutReshapeFunc(myReshape);  // ウィンドウサイズ変更時
     glutDisplayFunc(myDisplay);
 
+    mqoInit();
     // user define
 
     glutMainLoop();
