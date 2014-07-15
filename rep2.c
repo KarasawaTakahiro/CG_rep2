@@ -231,6 +231,11 @@ void myTimer(int value)
     }
 }
 
+void blockInit(){
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 0.0, 0.0));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 2.0, 0.0));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, "post_2_blue.mqo", 0.0, 4.0, 0.0));
+}
 
 int main(int argc, char** argv)
 {
@@ -245,6 +250,7 @@ int main(int argc, char** argv)
 
     mqoInit();
     // user define
+    blockInit();
 
     glutMainLoop();
     return 0;
