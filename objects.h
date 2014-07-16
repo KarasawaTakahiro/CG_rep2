@@ -20,8 +20,8 @@ typedef struct {
 
 // あたり判定用の線
 typedef struct {
-    double sx, sy, sz;  // 始点座標
-    double ex, ey, ez;  // 終点座標
+    double sx, sy, sz;  // 始点座標 ワールド座標系で指定すること
+    double ex, ey, ez;  // 終点座標 ワールド座標系で指定すること
 } collisionline_t;
 
 // ブロックの定義

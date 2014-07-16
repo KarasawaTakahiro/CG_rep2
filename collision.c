@@ -1,5 +1,6 @@
 #include "objects.h"  // GL/glut.hよりも先にincludeすべき.includeの衝突が起きる
 #include <GL/glut.h>
+#include <math.h>
 
 /* todo あたり判定
     ビー玉とブロックを総当たりで判定する
@@ -9,24 +10,26 @@
 
 */
 
-block_t* includeAreaCheck(marble_t* marble){
+block_t* includeAreaCheck(marble_t* marble, block_t** blocks, int blockNum){
     // ビー玉がブロックの領域に含まれれば、含むブロックを返す
-    /*
     int i;
 
     for(i=0; i<blockNum; i++){
-        if((blocks[i]->x <= marble->x && marble->x <= blocks[i]->width)
-                && (blocks[i]->y <= marble->y && marble->y <= blocks[i]->width)
-                && (blocks[i]->z <= marble->z && marble->z <= blocks[i]->width)){
+        if((abs(blocks[i]->x) <= abs(marble->x) && abs(marble->x) <= abs(blocks[i]->x+blocks[i]->width))
+        && (abs(blocks[i]->y) <= abs(marble->y) && abs(marble->y) <= abs(blocks[i]->y+blocks[i]->height))
+        && (abs(blocks[i]->z) <= abs(marble->z) && abs(marble->z) <= abs(blocks[i]->z+blocks[i]->width))){
+            printf("hit: blockId: %d\n", blocks[i]->id);
             // ブロックの領域内
             return blocks[i];
         }
 
     }
-    */
     return NULL;
 }
 
+
+// コリジョンラインを描画する
+// テスト用関数
 void drawCollisionline(block_t** blocks, int blocksNum){
     int i,j;
     collisionline_t** cls;

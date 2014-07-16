@@ -61,7 +61,7 @@ void myKeyboard(unsigned char key, int x, int y) {
             createMarble(&marbles, &marbleNum, 0.0, 10.0, 0.0, 0.0, 0.0, 1.0);
             break;
         case 'b':
-            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 5.0, 0.0, 0.2));
+            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 10.0, 0.0, 0.2));
             break;
         default:
             vector[0] = vector[1] = vector[2] = 0.0;
@@ -132,7 +132,8 @@ void updateMarbles(marble_t** mrbls, int num){
     marble_t* marble;
 
     for(i=0; i<num; i++){
-        marble = (marble_t*)mrbls[i];
+        marble = mrbls[i];
+        includeAreaCheck(marble, blocks, blockNum);
         marble->ay = acceleration(-90.0);
         marble->vy = velocity(marble->vy, marble->ay, 1.0);
         updateMarblePos(marble);

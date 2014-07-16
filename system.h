@@ -11,7 +11,7 @@ typedef struct {
 } field_t;
 
 // physics
-#define GRAVITY 1.0  //9.8
+#define GRAVITY 0.5  //9.8
 #define PI 3.14
 /*
    v = v0 + at
