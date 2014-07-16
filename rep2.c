@@ -5,6 +5,7 @@
 #include "objects.h"
 #include "myconstants.h"
 #include "collision.h"
+#include "vector.h"
 
 // 視点
 double posX=0.0, posY=0.0, posZ=0.0;
@@ -130,10 +131,12 @@ void updateMarbles(marble_t** mrbls, int num){
     // ビー玉の更新
     int i;
     marble_t* marble;
+    vector_t* v;
 
     for(i=0; i<num; i++){
         marble = mrbls[i];
-        includeAreaCheck(marble, blocks, blockNum);
+        v = calcHitVector(marble, blocks, blockNum);
+        printf("velocity: %.2f %.2f %.2f\n", v->x, v->y, v->z);
         marble->ay = acceleration(-90.0);
         marble->vy = velocity(marble->vy, marble->ay, 1.0);
         updateMarblePos(marble);
