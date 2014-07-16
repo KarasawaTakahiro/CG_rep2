@@ -4,6 +4,7 @@
 #include "system.h"
 #include "objects.h"
 #include "myconstants.h"
+#include "collision.h"
 
 // 視点
 double posX=0.0, posY=0.0, posZ=0.0;
@@ -151,22 +152,6 @@ void drawMarbles(marble_t** mrbls, int mNum){
         glutSolidSphere(marble->radius, 10, 10);
         glPopMatrix();
     }
-}
-
-block_t* includeAreaCheck(marble_t* marble){
-    // ビー玉がブロックの領域に含まれれば、含むブロックを返す
-    int i;
-
-    for(i=0; i<blockNum; i++){
-        if((blocks[i]->x <= marble->x && marble->x <= blocks[i]->width)
-                && (blocks[i]->y <= marble->y && marble->y <= blocks[i]->width)
-                && (blocks[i]->z <= marble->z && marble->z <= blocks[i]->width)){
-            // ブロックの領域内
-            return blocks[i];
-        }
-
-    }
-    return NULL;
 }
 
 void drawField(){
