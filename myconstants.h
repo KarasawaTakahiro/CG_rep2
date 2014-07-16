@@ -1,5 +1,5 @@
 
-#define MARBLE_SIZE 1.0
+#define MARBLE_SIZE 0.25
 #define MARBLE_MAX_NUM 10
 
 #define BLOCK_SHOW 1

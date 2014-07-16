@@ -4,6 +4,8 @@
 #include "system.h"
 #include "objects.h"
 #include "myconstants.h"
+#include "collision.h"
+#include "vector.h"
 
 // 視点
 double posX=0.0, posY=0.0, posZ=0.0;
@@ -60,7 +62,7 @@ void myKeyboard(unsigned char key, int x, int y) {
             createMarble(&marbles, &marbleNum, 0.0, 10.0, 0.0, 0.0, 0.0, 1.0);
             break;
         case 'b':
-            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 5.0, 0.0, 0.2));
+            printf("createBlk: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 10.0, 0.0, 0.2));
             break;
         default:
             vector[0] = vector[1] = vector[2] = 0.0;
@@ -129,9 +131,12 @@ void updateMarbles(marble_t** mrbls, int num){
     // ビー玉の更新
     int i;
     marble_t* marble;
+    vector_t* v;
 
     for(i=0; i<num; i++){
-        marble = (marble_t*)mrbls[i];
+        marble = mrbls[i];
+        v = calcHitVector(marble, blocks, blockNum);
+        printf("velocity: %.2f %.2f %.2f\n", v->x, v->y, v->z);
         marble->ay = acceleration(-90.0);
         marble->vy = velocity(marble->vy, marble->ay, 1.0);
         updateMarblePos(marble);
@@ -151,22 +156,6 @@ void drawMarbles(marble_t** mrbls, int mNum){
         glutSolidSphere(marble->radius, 10, 10);
         glPopMatrix();
     }
-}
-
-block_t* includeAreaCheck(marble_t* marble){
-    // ビー玉がブロックの領域に含まれれば、含むブロックを返す
-    int i;
-
-    for(i=0; i<blockNum; i++){
-        if((blocks[i]->x <= marble->x && marble->x <= blocks[i]->width)
-                && (blocks[i]->y <= marble->y && marble->y <= blocks[i]->width)
-                && (blocks[i]->z <= marble->z && marble->z <= blocks[i]->width)){
-            // ブロックの領域内
-            return blocks[i];
-        }
-
-    }
-    return NULL;
 }
 
 void drawField(){
@@ -192,6 +181,7 @@ void drawBlocks(block_t** blks, int num){
             glPopMatrix();
         }
     }
+    drawCollisionline(blocks, blockNum);
 }
 
 void myDisplay()
@@ -238,6 +228,10 @@ void blockInit(){
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 0.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 2.0, 0.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 4.0, 0.0, 0.02));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, -3.0, 0.0, 0.0, 0.02));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 3.0, 0.0, 0.0, 0.02));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, -3.0, 0.02));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 3.0, 0.02));
 }
 
 int main(int argc, char** argv)

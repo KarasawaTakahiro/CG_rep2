@@ -16,7 +16,7 @@ marble_t* newMarble(double x, double y, double z, double r, double g, double b){
         marble->b = b;
         marble->ax = marble->ay = marble->az = 0.0;
         marble->vx = marble->vy = marble->vz = 0.0;
-        marble->radius = MARBLE_SIZE/2.0;
+        marble->radius = MARBLE_SIZE;
         marble->id = marbleid++;
         return marble;
     }else{
@@ -32,6 +32,10 @@ int createMarble(marble_t*** marbles, int* marblesNum, double x, double y, doubl
     int res = 0;
     int ensure = 0;
     int num = *marblesNum;
+
+    if(MARBLE_MAX_NUM < num){
+        return 0;
+    }
 
     // 配列領域の確保
     if(num == 0){
@@ -67,11 +71,8 @@ void freeMarbles(marble_t** marbles, int num){
 
 // ブロックの定義
 int blkid = 1;
-/*
-    複数のモデルデータを読み込めるようにする
-    newblock()にモデルデータを表す定数を渡して、ブロックの領域を定義する
-*/
-block_t* newBlock(int modelType, double scale){
+
+block_t* newBlock(int modelType, double scale, double x, double y, double z){
     /*
        メタセコイアでのモデルデータを読み込む
        height, width, depth, model, collisionlines, collisionlinesNumは各々のload*関数で定義する
@@ -82,9 +83,9 @@ block_t* newBlock(int modelType, double scale){
         return NULL;
     }
     block->id = blkid ++;
-    block->x = 0.0;
-    block->y = 0.0;
-    block->z = 0.0;
+    block->x = x;
+    block->y = y;
+    block->z = z;
     block->e = 0.1;
     block->model = NULL;
     block->collisionlinesNum = 0;
@@ -129,17 +130,17 @@ int createBlock(block_t*** blocks, int *blocksNum, int modelType, double x, doub
     
     // 要素の領域を確保して配列に入れる
     if(ensure){
-        if((tmp = newBlock(modelType, scale)) != NULL){  // 領域を確保
-            tmp->x = x; tmp->y = y; tmp->z = z;  // パラメータを代入
+        if((tmp = newBlock(modelType, scale, x, y, z)) != NULL){  // 領域を確保
             tmpA[num] = tmp;
             num ++;
             (*blocks) = tmpA;  // 変数に入れる
             *blocksNum = num;
             res = tmp->id;
+            printf("new block: id:%d x:%.2f y%.2f z:%.2f l:%d\n", tmp->id, tmp->x, tmp->y, tmp->z, tmp->collisionlinesNum);
         }
     }else{
-		res = 0;
-	}
+        res = 0;
+    }
     return res;
 }
 
@@ -170,14 +171,19 @@ void deleteModel(block_t* block){
 
 // あたり判定用の線
 collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, double ey, double ez){
-    collisionline_t* line = (collisionline_t*) malloc(sizeof(collisionline_t));
-    line->sx = sx;
-    line->sy = sy;
-    line->sz = sz;
-    line->ex = ex;
-    line->ey = ey;
-    line->ez = ez;
-    return line;
+    collisionline_t* line;
+    if((line = (collisionline_t*) malloc(sizeof(collisionline_t))) != NULL){
+        line->sx = sx;
+        line->sy = sy;
+        line->sz = sz;
+        line->ex = ex;
+        line->ey = ey;
+        line->ez = ez;
+        printf("new collisionline: (%.2f, %.2f, %.2f) to (%.2f, %.2f, %.2f)\n", sx, sy, sz, ex, ey, ez);
+        return line;
+    }else{
+        return NULL;
+    }
 }
 
 int addCollisionline(block_t** block, collisionline_t* cl){
@@ -227,17 +233,14 @@ void loadPost(block_t* block, double scale){
     block->width = POST_WIDTH * scale;
     block->depth = POST_WIDTH * scale;
     block->model = mqoCreateModel(POST_PATH, scale);
-    for(theta=0; theta<=360; theta+=45){  // あたり判定用の線を定義して追加する
-        x = (POST_INTERNAL_RADIUS * scale) * cos(theta);
-        z = (POST_INTERNAL_RADIUS * scale) * sin(theta);
-        cl = newCollisionline(x, block->y, z, x, block->y+POST_HEIGHT, z);
+    printf("block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
+    for(theta=0; theta<360; theta+=45){  // あたり判定用の線を定義して追加する
+        x = ((POST_INTERNAL_RADIUS * scale) * cos(theta)) + block->x;
+        z = ((POST_INTERNAL_RADIUS * scale) * sin(theta)) + block->z;
+        if((cl = newCollisionline(x, block->y, z, x, block->y+block->height, z)) == NULL)
+            continue;
         addCollisionline(&block, cl);
     }
 }
-
-
-
-
-
 
 

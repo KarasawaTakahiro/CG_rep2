@@ -20,8 +20,8 @@ typedef struct {
 
 // あたり判定用の線
 typedef struct {
-    double sx, sy, sz;  // 始点座標
-    double ex, ey, ez;  // 終点座標
+    double sx, sy, sz;  // 始点座標 ワールド座標系で指定すること
+    double ex, ey, ez;  // 終点座標 ワールド座標系で指定すること
 } collisionline_t;
 
 // ブロックの定義
@@ -44,7 +44,7 @@ marble_t* newMarble(double x, double y, double z, double r, double g, double b);
 int createMarble(marble_t*** marbles, int* marbleNum, double x, double y, double z, double r, double g, double b);
 void freeMarbles(marble_t** marbles, int num);
 // ブロック
-block_t* newBlock(int modelType, double scale);
+block_t* newBlock(int modelType, double scale, double x, double y, double z);
 int createBlock(block_t*** blocks, int *blocksNum, int modelType, 
                 double x, double y, double z, double scale);
 void freeBlocks(block_t** blks, int num);
