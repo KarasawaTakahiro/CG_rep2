@@ -30,14 +30,13 @@ int blockNum = 0;
 
 // prototype define
 void rotatePosition(double side, double updown);
+void endprocessing();
 
 void myKeyboard(unsigned char key, int x, int y) {
     switch(key){
-        case '27':
-            freeMarbles(marbles, marbleNum);
-            freeBlocks(blocks, blockNum);
-            mqoCleanup();
-            exit(0);
+        case 27:
+            printf("presswd ESC\n");
+            endprocessing();
             break;
         case 'w':
             vector[2] = speed;
@@ -228,15 +227,21 @@ void myTimer(int value)
     }
 }
 
+void endprocessing(){
+    freeMarbles(marbles, marbleNum);
+    freeBlocks(blocks, blockNum);
+    mqoCleanup();
+    exit(0);
+}
+
 void blockInit(){
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 0.0, 0.2));
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 2.0, 0.0, 0.2));
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 4.0, 0.0, 0.2));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 0.0, 0.02));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 2.0, 0.0, 0.02));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 4.0, 0.0, 0.02));
 }
 
 int main(int argc, char** argv)
 {
-    /*
     glutInit(&argc, argv);
     myInit(argv[0]);
     glutKeyboardFunc(myKeyboard);
@@ -251,11 +256,7 @@ int main(int argc, char** argv)
     blockInit();
 
     glutMainLoop();
-    */
-    
-    // test
-    mqoInit();
-    createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 0.0, 0.2);
+
 
     return 0;
 }

@@ -60,6 +60,7 @@ int createMarble(marble_t*** marbles, int* marblesNum, double x, double y, doubl
 void freeMarbles(marble_t** marbles, int num){
     int i;
     for(i=0; i<num; i++){
+        printf("freeMarble: %d\n",i);
         free(marbles[i]);
     }
 }
@@ -85,7 +86,10 @@ block_t* newBlock(int modelType, double scale){
     block->y = 0.0;
     block->z = 0.0;
     block->e = 0.1;
+    block->model = NULL;
+    block->collisionlinesNum = 0;
     block->shown = BLOCK_SHOW;
+
     switch(modelType){
         case MODEL_TYPE_POST:
             loadPost(block, scale);
@@ -94,9 +98,7 @@ block_t* newBlock(int modelType, double scale){
             free(block);
             return NULL;
     }
-    block->height = 2.0;
-    block->width = 2.0;
-    block->depth = 2.0;
+
     return block;
 }
 
@@ -135,7 +137,9 @@ int createBlock(block_t*** blocks, int *blocksNum, int modelType, double x, doub
             *blocksNum = num;
             res = tmp->id;
         }
-    }
+    }else{
+		res = 0;
+	}
     return res;
 }
 
@@ -146,6 +150,8 @@ void freeBlocks(block_t** blks, int num){
     */
     int i;
     for(i=0; i<num; i++){
+        printf("free block id: %d\n", blks[i]->id);
+        deleteCollisionline(blks[i]);
         deleteModel(blks[i]);
         free(blks[i]);
     }
@@ -158,6 +164,7 @@ void callModel(block_t* block){
 
 void deleteModel(block_t* block){
     mqoDeleteModel(block->model);
+    printf("deleted model\n");
     block->shown = 0;
 }
 
@@ -200,6 +207,15 @@ int addCollisionline(block_t** block, collisionline_t* cl){
     return res;
 }
 
+void deleteCollisionline(block_t* block){
+    int i;
+    for(i=block->collisionlinesNum; i<0; i++){
+        printf("delete collisionline: %d\n", i);
+        free(block->collisionlines[i]);
+        block->collisionlinesNum--;
+    }
+}
+
 /*
    各モデルを読み込む関数群
  */
@@ -210,8 +226,7 @@ void loadPost(block_t* block, double scale){
     block->height = POST_HEIGHT * scale;
     block->width = POST_WIDTH * scale;
     block->depth = POST_WIDTH * scale;
-    //block->model = mqoCreateModel(POST_PATH, scale);
-    block->model = mqoCreateModel("post_2.mqo", scale);
+    block->model = mqoCreateModel(POST_PATH, scale);
     for(theta=0; theta<=360; theta+=45){  // あたり判定用の線を定義して追加する
         x = (POST_INTERNAL_RADIUS * scale) * cos(theta);
         z = (POST_INTERNAL_RADIUS * scale) * sin(theta);

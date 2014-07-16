@@ -49,8 +49,9 @@ int createBlock(block_t*** blocks, int *blocksNum, int modelType,
                 double x, double y, double z, double scale);
 void freeBlocks(block_t** blks, int num);
 // コリジョンライン
-collisionline_t* newCollisionline(sx, sy, sz, ex, ey, ez);
+collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, double ey, double ez);
 int addCollisionline(block_t** block, collisionline_t* cl);
+void deleteCollisionline(block_t* block);
 // モデル
 void callModel(block_t* block);
 void deleteModel(block_t* block);
