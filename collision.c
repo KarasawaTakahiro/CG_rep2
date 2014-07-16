@@ -27,6 +27,9 @@ block_t* includeAreaCheck(marble_t* marble, block_t** blocks, int blockNum){
     return NULL;
 }
 
+collisionline_t** hitCollisionlines(int* hitNum, marble_t* marble, block_t* block){
+    
+}
 
 // コリジョンラインを描画する
 // テスト用関数
