@@ -34,8 +34,6 @@ void drawCollisionline(block_t** blocks, int blocksNum){
     for(i=0; i<blocksNum; i++){
         cls = blocks[i]->collisionlines;
         for(j=0; j<blocks[i]->collisionlinesNum; j++){
-            //printf("draw collisionline: id: %d %d (%.2f, %.2f, %.2f) to (%.2f, %.2f, %.2f)\n", 
-            //       blocks[i]->id, j, cls[j]->sx, cls[j]->sy, cls[j]->sz, cls[j]->ex, cls[j]->ey, cls[j]->ez);
             glColor3d(0.5, 0.0, 0.0);
             glPushMatrix();
                 glBegin(GL_LINES);
