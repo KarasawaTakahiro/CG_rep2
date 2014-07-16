@@ -1,30 +1,23 @@
+#ifndef SYSTEM
+#define SYSTEM
 
 #include <GL/glut.h>
 
-/* todo
-あたり判定
-	ビー玉とブロックを総当たりで判定する
-	当たっていたらブロックに応じてビー玉を移動する
-	ブロックでいくつかの判定用の線分を定義しておく(角度もあるとよい？)
-	ブロックを作るたびに原点に近い順にソートしなおす
-
-*/
-
 // field
 typedef struct {
-	double x;  // サイズ
-	double y;  // 
-	double e;  // ビー玉との反発係数
+    double x;  // サイズ
+    double y;  // 
+    double e;  // ビー玉との反発係数
 } field_t;
 
 // physics
 #define GRAVITY 1.0  //9.8
 #define PI 3.14
 /*
-	v = v0 + at
-	x = v0t + 0.5at^2
-	v^2 - v0^2 = 2ax
-*/
+   v = v0 + at
+   x = v0t + 0.5at^2
+   v^2 - v0^2 = 2ax
+ */
 
 
 
@@ -40,3 +33,4 @@ double theta(double x1, double y1, double x2, double y2);
 double toDegree(double rad);
 void polarView(double posX, double posY, double posZ, double distance, double twist, double elevation, double azimuth);
 
+#endif

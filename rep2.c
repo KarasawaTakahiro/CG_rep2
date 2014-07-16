@@ -177,6 +177,7 @@ void drawBlocks(block_t** blks, int num){
             glPopMatrix();
         }
     }
+    drawCollisionline(blocks, blockNum);
 }
 
 void myDisplay()
