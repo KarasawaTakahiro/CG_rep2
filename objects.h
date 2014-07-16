@@ -44,7 +44,7 @@ marble_t* newMarble(double x, double y, double z, double r, double g, double b);
 int createMarble(marble_t*** marbles, int* marbleNum, double x, double y, double z, double r, double g, double b);
 void freeMarbles(marble_t** marbles, int num);
 // ブロック
-block_t* newBlock(int modelType, double scale);
+block_t* newBlock(int modelType, double scale, double x, double y, double z);
 int createBlock(block_t*** blocks, int *blocksNum, int modelType, 
                 double x, double y, double z, double scale);
 void freeBlocks(block_t** blks, int num);
