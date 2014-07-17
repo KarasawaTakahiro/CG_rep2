@@ -38,7 +38,11 @@ vector_t* hitVector(marble_t* marble, block_t* block){
     vector_t* velocity = newVector(0.0, 0.0, 0.0);  // 速度のベクトル
     vector_t* clv;  // コリジョンラインのベクトル
     vector_t* mblv; // コリジョンラインの始点からビー玉の中心までのベクトル
+    vector_t* normal;  // 法線ベクトル
+    vector_t* ndash, *inv, *p, *tmp, *v, *movevector;
+    vector_t mvv;  // ビー玉の速度ベクトル
     double clmbl, mblv2;  // 計算用
+
     for(i=0; i<block->collisionlinesNum; i++){
         cl = block->collisionlines[i];
         // 当たり判定
@@ -47,7 +51,7 @@ vector_t* hitVector(marble_t* marble, block_t* block){
         clmbl = dotProduct(clv, mblv);
         if(clmbl < 0){
             /* 球の中心がclの始点よりも遠く*/
-            if(vectorLength(clv) < marble->radius){
+            if(length(clv) < marble->radius){
                 /* 距離と半径とを比較 */
                 // hit!
                 hit = 1;
@@ -56,7 +60,7 @@ vector_t* hitVector(marble_t* marble, block_t* block){
             mblv2 = dotProduct(mblv, mblv);
             if(mblv2 < clmbl){
                 /* 球の中心が線分の終点よりも遠くにある */
-                if(pow(vectorLength(vectorSub(mblv, clv)), 2) < (marble->radius*marble->radius)){
+                if(pow(length(vectorSub(mblv, clv)), 2) < (marble->radius*marble->radius)){
                     /* 距離と半径とを2乗で比較 */
                     // hit!
                     hit = 1;
@@ -70,7 +74,29 @@ vector_t* hitVector(marble_t* marble, block_t* block){
                 }
             }
         }
-        printf("hitVector: %d\n", i);
+        // ベクトル計算
+        if(hit){
+            initVector(&mvv, marble->x, marble->y, marble->z);
+            normal = vectorCrossProduct(&mvv, clv);
+            ndash = normalize(normal);
+            inv = vectorScalarMul(-1.0, &mvv);
+            p = vectorScalarMul(dotProduct(inv, ndash), ndash);
+            v = vectorAdd(&mvv, p);
+            movevector = vectorAdd(v, p);
+            tmp = velocity;
+            velocity = vectorAdd(tmp, movevector);
+
+            printf("tmp: "); showVector(tmp); printf("\n");
+            printf("velocity: "); showVector(velocity); printf("\n");
+
+            free(normal);
+            free(ndash);
+            free(inv);
+            free(p);
+            free(v);
+            free(movevector);
+            free(tmp);
+        }
     }
     return velocity;
 }
