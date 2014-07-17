@@ -138,6 +138,10 @@ void updateMarbles(marble_t** mrbls, int num){
         v = calcHitVector(marble, blocks, blockNum);
         printf("velocity: %.2f %.2f %.2f\n", v->x, v->y, v->z);
         marble->ay = acceleration(-90.0);
+        marble->vx += v->x;
+        marble->vy += v->y;
+        marble->vz += v->z;
+        free(v);
         marble->vy = velocity(marble->vy, marble->ay, 1.0);
         updateMarblePos(marble);
     }
