@@ -11,6 +11,7 @@
 #define MODEL_TYPE_POST 100
 #define MODEL_TYPE_STRAIGHT 101
 
+#define MODEL_MAX_DEVISION 3  // モデルの最大分割数
 
 /*
     各モデルの数値を表す定数
@@ -25,17 +26,33 @@
 #define POST_OUTER_RADIUS 17.0     // 最外側の半径
 
 // 直線パーツ
-#define STRAIGHT_PATH "straight_2.mqo"
-#define STRAIGHT_HEIGHT 50.0
-#define STRAIGHT_WIDTH 194.6
-#define STRAIGHT_DEPTH 34.0
-#define STRAIGHT_INTERNAL_RADIUS 10.0                // 最内側の半径
-#define STRAIGHT_OUTER_RADIUS 17.0                   // 最外側の半径
-#define STRAIGHT_BRIGDE_BASE_HIGHEST 2.3             // 通路の底面で一番高い点
-#define STRAIGHT_BRIDGE_BASE_LOWEST 1.8              // 通路の底面で一番低い点
-#define STRAIGHT_BRIDGE_WIDTH 20.0                   // 通路の幅
-#define STRAIGHT_BRIDGE_DEPTH 7.7                    // 通路の深さ
-#define STRAIGHT_BRIDGE_OVERALL_LENGTH 114.7         // 通路の全長
-#define STRAIGHT_BRIDGE_ENTRANCE_SIDE_LENGTH 89.5    // 中心から入り口側の端までの長さ
-#define STRAIGHT_BRIDGE_OUTLET_SIDE_LENGTH 25.2      // 中心から出口側の端までの長さ
-#define STRAIGHT_BRIDGE_LOOKABLE_LENGTH 125.0        // ビー玉が見える範囲の長さ
+#define STRAIGHT_PATH "straight.mqo"
+#define STRAIGHT_HEIGHT 28.3  // 最高点
+#define STRAIGHT_WIDTH 114.7
+#define STRAIGHT_DEPTH 20.0
+#define STRAIGHT_RADIUS 10.0                   // 通路の半径
+#define STRAIGHT_GROOVE_DEPTH 7.7             // 通路の深さ
+#define STRAIGHT_BASE_HIGHEST 2.3             // 通路の底面で一番高い点
+#define STRAIGHT_BASE_LOWEST 1.8              // 通路の底面で一番低い点
+#define STRAIGHT_OVERALL_LENGTH 114.7         // 通路の全長
+
+// 橋パーツの入り口側
+#define BRIDGE_ENTRANCE_PATH "bridge_entrance.mqo"
+#define BRIDGE_ENTRANCE_CORRECTION_X 106.5  // 柱パーツの中心とこのパーツの中心をそろえる時のX軸方向の補正
+#define BRIDGE_ENTRANCE_HIGHT 50.0                          // 最大値
+#define BRIDGE_ENTRANCE_WIDTH 34.0                          // 最大値
+#define BRIDGE_ENTRANCE_DEPTH 34.0                          // 最大値
+#define BRIDGE_ENTRANCE_INTERNAL_RADIUS 10.0                // 最内側の半径
+#define BRIDGE_ENTRANCE_OUTER_RADIUS 17.0                   // 最外側の半径
+#define BRIDGE_ENTRANCE_LOOKABLE_LENGTH_FROM_ORIGIN 89.5    // 中心から入り口側の端までの長さ
+
+// 橋パーツの出口側
+#define BRIDGE_OUTLET_PATH "bridge_outlet.mqo"
+#define BRIDGE_OUTLET_CORRECTION_X -106.5                   // 補正値
+#define BRIDGE_OUTLET_HIGHT 50.0                            // 最大値
+#define BRIDGE_OUTLET_WIDTH 34.0                            // 最大値
+#define BRIDGE_OUTLET_DEPTH 34.0                            // 最大値
+#define BRIDGE_OUTLET_INTERNAL_RADIUS 10.0                  // 最内側の半径
+#define BRIDGE_OUTLET_OUTER_RADIUS 17.0                     // 最外側の半径
+#define BRIDGE_OUTLET_LOOKABLE_LENGTH_FROM_ORIGIN 25.2      // 中心から出口側の端までの長さ
+

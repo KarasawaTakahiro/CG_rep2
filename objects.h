@@ -30,7 +30,8 @@ typedef struct{
     double x, y, z;  // 座標
     double height, width, depth;  // サイズ
     double e;  // ビー玉との反発係数
-    MQO_MODEL model;
+    MQO_MODEL model[MODEL_MAX_DEVISION];
+    int modelsNum;
     int shown;
     collisionline_t** collisionlines;
     int collisionlinesNum;
@@ -56,6 +57,6 @@ void deleteCollisionline(block_t* block);
 void callModel(block_t* block);
 void deleteModel(block_t* block);
 void loadPost(block_t* block, double scale);
-void loadStraight(block_t *block, double scale);
+void loadBrige(block_t *block, double scale);  // 橋のモデルを読み込む
 
 #endif

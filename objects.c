@@ -246,7 +246,7 @@ void loadPost(block_t* block, double scale){
     }
 }
 
-void loadStraight(block_t *block, double scale){
+void loadBrige(block_t *block, double scale){
     collisionline_t *cl;
     int theata;
 
