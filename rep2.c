@@ -236,8 +236,9 @@ void blockInit(){
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, -3.0, 0.0, 0.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 3.0, 0.0, 0.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, -3.0, 0.02));
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 3.0, 0.02));
     */
+    //printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 3.0, 0.02));
+
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_STRAIGHT, 0.0, 0.0, 0.0, 0.02));
 }
 
@@ -248,7 +249,7 @@ int main(int argc, char** argv)
     glutKeyboardFunc(myKeyboard);
     glutTimerFunc(samplingTime, myTimer, 1);
     glutMouseFunc(myMouseFunc);
-    glutMotionFunc(myMouseMotion);	
+    glutMotionFunc(myMouseMotion);
     glutReshapeFunc(myReshape);  // ウィンドウサイズ変更時
     glutDisplayFunc(myDisplay);
 

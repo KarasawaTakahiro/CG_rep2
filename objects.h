@@ -64,7 +64,8 @@ void deleteCollisionline(block_t* block);
 // モデル
 void callModel(block_t* block);
 void deleteModel(block_t* block);
+void initModel(model_t *model, char* path, double scale, double corX, double corY, double corZ);
 void loadPost(block_t* block, double scale);
-void loadBrige(block_t *block, double scale);  // 橋のモデルを読み込む
+void loadBridge(block_t *block, double scale);
 
 #endif

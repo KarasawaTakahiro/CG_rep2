@@ -28,13 +28,15 @@
 // 直線パーツ
 #define STRAIGHT_PATH "straight.mqo"
 #define STRAIGHT_HEIGHT 28.3  // 最高点
-#define STRAIGHT_WIDTH 114.7
+#define STRAIGHT_WIDTH 160.5
 #define STRAIGHT_DEPTH 20.0
 #define STRAIGHT_RADIUS 10.0                   // 通路の半径
 #define STRAIGHT_GROOVE_DEPTH 7.7             // 通路の深さ
 #define STRAIGHT_BASE_HIGHEST 2.3             // 通路の底面で一番高い点
 #define STRAIGHT_BASE_LOWEST 1.8              // 通路の底面で一番低い点
-#define STRAIGHT_OVERALL_LENGTH 114.7         // 通路の全長
+#define STRAIGHT_OVERALL_LENGTH 160.5         // 通路の底辺の幅(z軸から見た底面の長さ)
+#define STRAIGHT_LENGTH_UPPER_SIDE 91.5       // 通路の底辺の幅(中心から上がっている方の端まで)
+#define STRAIGHT_LENGTH_LOWER_SIDE 69.0       // 通路の底辺の幅(中心から下がっている方の端まで)
 
 // 橋パーツの入り口側
 #define BRIDGE_ENTRANCE_PATH "bridge_entrance.mqo"

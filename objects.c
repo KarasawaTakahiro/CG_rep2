@@ -87,7 +87,6 @@ block_t* newBlock(int modelType, double scale, double x, double y, double z){
     block->y = y;
     block->z = z;
     block->e = 0.1;
-    block->model = NULL;
     block->collisionlinesNum = 0;
     block->shown = BLOCK_SHOW;
 
@@ -96,7 +95,7 @@ block_t* newBlock(int modelType, double scale, double x, double y, double z){
             loadPost(block, scale);
             break;
         case MODEL_TYPE_STRAIGHT:
-            loadStraight(block, scale);
+            loadBridge(block, scale);
             break;
         default:
             free(block);
@@ -163,11 +162,17 @@ void freeBlocks(block_t** blks, int num){
 
 // モデルの描画関数
 void callModel(block_t* block){
-    mqoCallModel(block->model);
+    int i;
+    for(i=0; i<block->modelsNum; i++){
+        mqoCallModel(block->models[i].model);
+    }
 }
 
 void deleteModel(block_t* block){
-    mqoDeleteModel(block->model);
+    int i;
+    for(i=0; i<block->modelsNum; i++){
+        mqoDeleteModel(block->models[i].model);
+    }
     printf("deleted model\n");
     block->shown = 0;
 }
@@ -243,7 +248,8 @@ void loadPost(block_t* block, double scale){
     block->height = POST_HEIGHT * scale;
     block->width = POST_WIDTH * scale;
     block->depth = POST_WIDTH * scale;
-    block->model = mqoCreateModel(POST_PATH, scale);
+    block->modelsNum = 1;
+    initModel(&(block->models[0]), POST_PATH, scale, 0.0, 0.0, 0.0);
     printf("post block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
     for(theta=0; theta<360; theta+=45){  // あたり判定用の線を定義して追加する
         x = ((POST_INTERNAL_RADIUS * scale) * cos(theta)) + block->x;
@@ -254,22 +260,68 @@ void loadPost(block_t* block, double scale){
     }
 }
 
-void loadBrige(block_t *block, double scale){
+void loadBridge(block_t *block, double scale){
     collisionline_t *cl;
     int theata;
+    double corrz;  // Z方向の補正値
+    double x, z;
 
     block->height = STRAIGHT_HEIGHT * scale;
     block->width = STRAIGHT_WIDTH * scale;
     block->depth = STRAIGHT_WIDTH * scale;
     block->modelsNum = 3;
-    block->models[0] = initModel("straight.mqo", scale, 0.0, 0.0, 0.0);
-    block->models[1] = initModel("bridge_entrance.mqo", scale, BRIDGE_ENTRANCE_CORRECTION_X, 0.0, 0.0);
-    block->models[2] = initModel("bridge_outlet.mqo", scale, BRIDGE_OUTLET_CORRECTION_X, 0.0, 0.0);
+    initModel(&(block->models[0]), STRAIGHT_PATH, scale, 0.0, 0.0, 0.0);
+    initModel(&(block->models[1]), BRIDGE_OUTLET_PATH, scale, BRIDGE_OUTLET_CORRECTION_X, 0.0, 0.0);
+    initModel(&(block->models[2]), BRIDGE_ENTRANCE_PATH, scale, BRIDGE_ENTRANCE_CORRECTION_X, 0.0, 0.0);
     printf("stright block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
     // 通路部分のコリジョンラインの定義
+    corrz = scale * STRAIGHT_RADIUS * cos(asin(scale * STRAIGHT_RADIUS/(scale * STRAIGHT_RADIUS/scale * STRAIGHT_GROOVE_DEPTH)));
+    // 最も手前の辺
+    if((cl = newCollisionline(block->x + scale * STRAIGHT_LENGTH_UPPER_SIDE,
+                              block->y + scale * STRAIGHT_BASE_HIGHEST + scale * STRAIGHT_GROOVE_DEPTH,
+                              block->z + corrz, 
+                              block->x - scale * STRAIGHT_LENGTH_LOWER_SIDE,
+                              block->y + scale * STRAIGHT_BASE_LOWEST + scale * STRAIGHT_GROOVE_DEPTH,
+                              block->z + corrz)
+                              ) != NULL){
+        addCollisionline(&block, cl);
+    }
+    // 最も下の辺
+    if((cl = newCollisionline(block->x + scale * STRAIGHT_LENGTH_UPPER_SIDE,
+                              block->y + scale * STRAIGHT_BASE_HIGHEST,
+                              block->z,
+                              block->x - scale * STRAIGHT_LENGTH_LOWER_SIDE,
+                              block->y + scale * STRAIGHT_BASE_LOWEST,
+                              block->z)
+                              ) != NULL){
+        addCollisionline(&block, cl);
+    }
+    // 最も奥の辺
+    if((cl = newCollisionline(block->x + scale * STRAIGHT_LENGTH_UPPER_SIDE,
+                              block->y + scale * STRAIGHT_BASE_HIGHEST + scale * STRAIGHT_GROOVE_DEPTH,
+                              block->z - corrz, 
+                              block->x - scale * STRAIGHT_LENGTH_LOWER_SIDE,
+                              block->y + scale * STRAIGHT_BASE_LOWEST + scale * STRAIGHT_GROOVE_DEPTH,
+                              block->z - corrz)
+                              ) != NULL){
+        addCollisionline(&block, cl);
+    }
     // 入り口側のコリジョンラインの定義
-    for(theata=0; theata<=180; theata += 45){
+    for(theata=0; theata<360; theata += 45){
+        if(135 < theata && theata < 225){continue;}  // 出入り口は判定しない
+        x = BRIDGE_ENTRANCE_INTERNAL_RADIUS * scale * cos(theata) + block->x + BRIDGE_ENTRANCE_CORRECTION_X * scale;
+        z = BRIDGE_ENTRANCE_INTERNAL_RADIUS * scale * sin(theata) + block->z;
+        if((cl = newCollisionline(x, block->y, z, x, block->y+block->height, z)) == NULL)
+            continue;
+        addCollisionline(&block, cl);
     }
     // 出口側のコリジョンラインの定義
+    for(theata=45; theata<=315; theata += 45){
+        x = BRIDGE_OUTLET_INTERNAL_RADIUS * scale * cos(theata) + block->x + BRIDGE_OUTLET_CORRECTION_X * scale;
+        z = BRIDGE_OUTLET_INTERNAL_RADIUS * scale * sin(theata) + block->z;
+        if((cl = newCollisionline(x, block->y, z, x, block->y+block->height, z)) == NULL)
+            continue;
+        addCollisionline(&block, cl);
+    }
 }
 
