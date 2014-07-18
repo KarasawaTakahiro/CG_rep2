@@ -228,6 +228,14 @@ void deleteCollisionline(block_t* block){
 /*
    各モデルを読み込む関数群
  */
+
+void initModel(model_t *model, char* path, double scale, double corX, double corY, double corZ){
+    model->model = mqoCreateModel(path, scale);
+    model->correction_x = corX;
+    model->correction_y = corY;
+    model->correction_z = corZ;
+}
+
 void loadPost(block_t* block, double scale){
     collisionline_t* cl;
     int theta;
@@ -253,12 +261,15 @@ void loadBrige(block_t *block, double scale){
     block->height = STRAIGHT_HEIGHT * scale;
     block->width = STRAIGHT_WIDTH * scale;
     block->depth = STRAIGHT_WIDTH * scale;
-    block->model = mqoCreateModel(STRAIGHT_PATH, scale);
+    block->modelsNum = 3;
+    block->models[0] = initModel("straight.mqo", scale, 0.0, 0.0, 0.0);
+    block->models[1] = initModel("bridge_entrance.mqo", scale, BRIDGE_ENTRANCE_CORRECTION_X, 0.0, 0.0);
+    block->models[2] = initModel("bridge_outlet.mqo", scale, BRIDGE_OUTLET_CORRECTION_X, 0.0, 0.0);
     printf("stright block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
+    // 通路部分のコリジョンラインの定義
     // 入り口側のコリジョンラインの定義
     for(theata=0; theata<=180; theata += 45){
     }
     // 出口側のコリジョンラインの定義
-    // 通路部分のコリジョンラインの定義
 }
 

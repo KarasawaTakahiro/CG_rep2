@@ -24,13 +24,21 @@ typedef struct {
     double ex, ey, ez;  // 終点座標 ワールド座標系で指定すること
 } collisionline_t;
 
+// モデル
+typedef struct {
+    MQO_MODEL model;  // モデル構造体
+    double correction_x;  // 親ブロックの中心との補正値
+    double correction_y;  // 親ブロックの中心との補正値
+    double correction_z;  // 親ブロックの中心との補正値
+} model_t;
+
 // ブロックの定義
 typedef struct{
     int id;
     double x, y, z;  // 座標
     double height, width, depth;  // サイズ
     double e;  // ビー玉との反発係数
-    MQO_MODEL model[MODEL_MAX_DEVISION];
+    model_t models[MODEL_MAX_DEVISION];
     int modelsNum;
     int shown;
     collisionline_t** collisionlines;
