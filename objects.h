@@ -56,5 +56,6 @@ void deleteCollisionline(block_t* block);
 void callModel(block_t* block);
 void deleteModel(block_t* block);
 void loadPost(block_t* block, double scale);
+void loadStraight(block_t *block, double scale);
 
 #endif

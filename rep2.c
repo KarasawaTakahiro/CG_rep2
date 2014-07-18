@@ -229,6 +229,7 @@ void endprocessing(){
 }
 
 void blockInit(){
+    /*
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 0.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 2.0, 0.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 4.0, 0.0, 0.02));
@@ -236,6 +237,8 @@ void blockInit(){
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 3.0, 0.0, 0.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, -3.0, 0.02));
     printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 3.0, 0.02));
+    */
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_STRAIGHT, 0.0, 0.0, 0.0, 0.02));
 }
 
 int main(int argc, char** argv)

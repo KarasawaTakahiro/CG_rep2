@@ -95,6 +95,9 @@ block_t* newBlock(int modelType, double scale, double x, double y, double z){
         case MODEL_TYPE_POST:
             loadPost(block, scale);
             break;
+        case MODEL_TYPE_STRAIGHT:
+            loadStraight(block, scale);
+            break;
         default:
             free(block);
             return NULL;
@@ -233,7 +236,7 @@ void loadPost(block_t* block, double scale){
     block->width = POST_WIDTH * scale;
     block->depth = POST_WIDTH * scale;
     block->model = mqoCreateModel(POST_PATH, scale);
-    printf("block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
+    printf("post block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
     for(theta=0; theta<360; theta+=45){  // あたり判定用の線を定義して追加する
         x = ((POST_INTERNAL_RADIUS * scale) * cos(theta)) + block->x;
         z = ((POST_INTERNAL_RADIUS * scale) * sin(theta)) + block->z;
@@ -243,4 +246,19 @@ void loadPost(block_t* block, double scale){
     }
 }
 
+void loadStraight(block_t *block, double scale){
+    collisionline_t *cl;
+    int theata;
+
+    block->height = STRAIGHT_HEIGHT * scale;
+    block->width = STRAIGHT_WIDTH * scale;
+    block->depth = STRAIGHT_WIDTH * scale;
+    block->model = mqoCreateModel(STRAIGHT_PATH, scale);
+    printf("stright block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
+    // 入り口側のコリジョンラインの定義
+    for(theata=0; theata<=180; theata += 45){
+    }
+    // 出口側のコリジョンラインの定義
+    // 通路部分のコリジョンラインの定義
+}
 
