@@ -32,29 +32,29 @@
 #define STRAIGHT_DEPTH 20.0
 #define STRAIGHT_RADIUS 10.0                   // 通路の半径
 #define STRAIGHT_GROOVE_DEPTH 7.7             // 通路の深さ
-#define STRAIGHT_BASE_HIGHEST 2.3             // 通路の底面で一番高い点
-#define STRAIGHT_BASE_LOWEST 1.8              // 通路の底面で一番低い点
+#define STRAIGHT_BASE_HIGHEST 18.6             // 通路の底面で一番高い点
+#define STRAIGHT_BASE_LOWEST 1.3              // 通路の底面で一番低い点
 #define STRAIGHT_OVERALL_LENGTH 160.5         // 通路の底辺の幅(z軸から見た底面の長さ)
 #define STRAIGHT_LENGTH_UPPER_SIDE 91.5       // 通路の底辺の幅(中心から上がっている方の端まで)
 #define STRAIGHT_LENGTH_LOWER_SIDE 69.0       // 通路の底辺の幅(中心から下がっている方の端まで)
 
 // 橋パーツの入り口側
 #define BRIDGE_ENTRANCE_PATH "bridge_entrance.mqo"
-#define BRIDGE_ENTRANCE_CORRECTION_X 106.5  // 柱パーツの中心とこのパーツの中心をそろえる時のX軸方向の補正
+#define BRIDGE_ENTRANCE_CORRECTION_X 80.0  // 柱パーツの中心とこのパーツの中心をそろえる時のX軸方向の補正
 #define BRIDGE_ENTRANCE_HIGHT 50.0                          // 最大値
 #define BRIDGE_ENTRANCE_WIDTH 34.0                          // 最大値
 #define BRIDGE_ENTRANCE_DEPTH 34.0                          // 最大値
 #define BRIDGE_ENTRANCE_INTERNAL_RADIUS 10.0                // 最内側の半径
 #define BRIDGE_ENTRANCE_OUTER_RADIUS 17.0                   // 最外側の半径
-#define BRIDGE_ENTRANCE_LOOKABLE_LENGTH_FROM_ORIGIN 89.5    // 中心から入り口側の端までの長さ
+#define BRIDGE_ENTRANCE_LOOKABLE_LENGTH_FROM_ORIGIN 63.0    // 中心から入り口側の端までの長さ
 
 // 橋パーツの出口側
 #define BRIDGE_OUTLET_PATH "bridge_outlet.mqo"
-#define BRIDGE_OUTLET_CORRECTION_X -106.5                   // 補正値
+#define BRIDGE_OUTLET_CORRECTION_X -80.0                  // 補正値
 #define BRIDGE_OUTLET_HIGHT 50.0                            // 最大値
 #define BRIDGE_OUTLET_WIDTH 34.0                            // 最大値
 #define BRIDGE_OUTLET_DEPTH 34.0                            // 最大値
 #define BRIDGE_OUTLET_INTERNAL_RADIUS 10.0                  // 最内側の半径
 #define BRIDGE_OUTLET_OUTER_RADIUS 17.0                     // 最外側の半径
-#define BRIDGE_OUTLET_LOOKABLE_LENGTH_FROM_ORIGIN 25.2      // 中心から出口側の端までの長さ
+#define BRIDGE_OUTLET_LOOKABLE_LENGTH_FROM_ORIGIN 63.0      // 中心から出口側の端までの長さ
 
