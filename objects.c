@@ -2,6 +2,7 @@
 #include "system.h"
 #include "objects.h"
 #include "GLMetaseq.h"
+#include "vector.h"
 
 // ビー玉の定義
 int marbleid = 1;
@@ -193,7 +194,7 @@ void deleteModel(block_t* block){
 // あたり判定用の線
 collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, double ey, double ez){
     collisionline_t* line;
-    vector2d_t v1, v2;
+    vector2d_t *v1=NULL, *v2=NULL;
     if((line = (collisionline_t*) malloc(sizeof(collisionline_t))) != NULL){
         line->sx = sx;
         line->sy = sy;
@@ -204,13 +205,13 @@ collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, do
         // 角度の算出
         initVector2d(v1, sx, sy);
         initVector2d(v2, ex, ey);
-        line->inclinationXY = (int) toDegree( angleBetweenTwoVector2d(v1, v2));
+        line->inclinationXY = (int) toDegree( angleBetweenTwoVector2d(*v1, *v2));
         initVector2d(v1, sy, sz);
         initVector2d(v2, ey, ez);
-        line->inclinationYZ = (int) toDegree( angleBetweenTwoVector2d(v1, v2));
-        initVector2d(v1, sx, sZ);
-        initVector2d(v2, ex, eZ);
-        line->inclinationXZ = (int) toDegree( angleBetweenTwoVector2d(v1, v2));
+        line->inclinationYZ = (int) toDegree( angleBetweenTwoVector2d(*v1, *v2));
+        initVector2d(v1, sx, sz);
+        initVector2d(v2, ex, ez);
+        line->inclinationXZ = (int) toDegree( angleBetweenTwoVector2d(*v1, *v2));
 
         printf("new collisionline: (%.2f, %.2f, %.2f) to (%.2f, %.2f, %.2f)\n", sx, sy, sz, ex, ey, ez);
         return line;
