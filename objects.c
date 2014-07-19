@@ -161,6 +161,18 @@ void freeBlocks(block_t** blks, int num){
     }
 }
 
+// idからブロックを得る
+block_t* getBlockById(block_t **blocks, int blocksNum, int id){
+    int i;
+
+    for(i=0; i<blocksNum; i++){
+        if(blocks[i]->id == id){
+            return blocks[i];
+        }
+    }
+    return NULL;
+}
+
 // モデルの描画関数
 void callModel(block_t* block){
     int i;

@@ -58,6 +58,7 @@ block_t* newBlock(int modelType, double scale, double x, double y, double z);
 int createBlock(block_t*** blocks, int *blocksNum, int modelType, 
                 double x, double y, double z, double scale);
 void freeBlocks(block_t** blks, int num);
+block_t* getBlockById(block_t **blocks, int blocksNum, int id);
 // コリジョンライン
 collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, double ey, double ez);
 int addCollisionline(block_t** block, collisionline_t* cl);
