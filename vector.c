@@ -69,4 +69,28 @@ vector_t* normalize(vector_t* v){
     return newVector(v->x/size, v->y/size, v->z/size);
 }
 
+/*
+    2Dベクトル関数群
+ */
+void initVector2d(vector2d_t* v, double x, double y){
+    v->x = x;
+    v->y = y;
+}
+
+void showVector2d(vector2d_t v){
+    printf("(%.2f, %.2f)", v.x, v.y);
+}
+
+double length2d(vector2d_t v){
+    return (sqrt(v.x*v.x, v.y*v.y));
+}
+
+double dotProduct2d(vector2d_t v1, vector2d_t v2){
+    return ( v1.x * v2.x + v1.y * v2.y );
+}
+
+// なす角[rad]を返す
+double angleBetweenTwoVector2d(vector2d_t v1, vector2d_t v2){
+    return ( acos( dotProduct2d(v1, v2) / ( length2d(v1) * length2d(v2) ) ) );
+}
 

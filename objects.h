@@ -23,6 +23,9 @@ typedef struct {
 typedef struct {
     double sx, sy, sz;  // 始点座標 ワールド座標系で指定すること
     double ex, ey, ez;  // 終点座標 ワールド座標系で指定すること
+    int inclinationXY;  // 平面での斜度
+    int inclinationYZ;  // 平面での斜度
+    int inclinationXZ;  // 平面での斜度
 } collisionline_t;
 
 // モデル
