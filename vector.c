@@ -53,6 +53,13 @@ vector_t* vectorAdd(vector_t* v1, vector_t* v2){
     return newVector(v2->x+v1->x, v2->y + v1->y, v2->z + v1->z);
 }
 
+// 加算
+void add(vector_t* v1, vector_t v2){
+    v1->x += v2.x;
+    v1->y += v2.y;
+    v1->z += v2.z;
+}
+
 // スカラー倍
 vector_t* vectorScalarMul(double scalar, vector_t* v){
     return (newVector(v->x * scalar, v->y * scalar, v->z * scalar));
@@ -82,7 +89,7 @@ void showVector2d(vector2d_t v){
 }
 
 double length2d(vector2d_t v){
-    return (sqrt(v.x*v.x, v.y*v.y));
+    return (sqrt(v.x*v.x + v.y*v.y));
 }
 
 double dotProduct2d(vector2d_t v1, vector2d_t v2){

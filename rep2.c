@@ -127,7 +127,7 @@ void updateMarblePos(marble_t* marble){
     }
 }
 
-void updateMarbles(marble_t** mrbls, int num){
+void updateMarbles(marble_t** mrbls, int num, block_t **blks, int blksNum){
     // ビー玉の更新
     int i;
     marble_t* marble;
@@ -135,14 +135,7 @@ void updateMarbles(marble_t** mrbls, int num){
 
     for(i=0; i<num; i++){
         marble = mrbls[i];
-        v = calcHitVector(marble, blocks, blockNum);
-        printf("velocity: %.2f %.2f %.2f\n", v->x, v->y, v->z);
-        marble->ay = acceleration(-90.0);
-        marble->vx += v->x;
-        marble->vy += v->y;
-        marble->vz += v->z;
-        free(v);
-        marble->vy = velocity(marble->vy, marble->ay, 1.0);
+        updateSpeed(marble, blks, blksNum);
         updateMarblePos(marble);
     }
 }
@@ -215,7 +208,7 @@ void myTimer(int value)
     {
         glutTimerFunc(samplingTime,myTimer,1);
 
-        updateMarbles(marbles, marbleNum);
+        updateMarbles(marbles, marbleNum, blocks, blockNum);
 
         glutPostRedisplay();
     }

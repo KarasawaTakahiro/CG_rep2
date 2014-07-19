@@ -6,8 +6,17 @@
 #define MARBLE_MAX_NUM 10
 #define MARBLE_NOT_HIT -1
 
+/*
+    ブロックに関する定義
+ */
 #define BLOCK_SHOW 1
 #define BLOCK_HIDE 0
+
+/*
+    衝突判定に関する定義
+ */
+#define IS_HIT 1
+#define NOT_HIT 0
 
 /*
    モデルの種類を示す定数
