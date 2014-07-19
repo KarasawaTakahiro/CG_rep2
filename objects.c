@@ -17,6 +17,7 @@ marble_t* newMarble(double x, double y, double z, double r, double g, double b){
         marble->ax = marble->ay = marble->az = 0.0;
         marble->vx = marble->vy = marble->vz = 0.0;
         marble->radius = MARBLE_SIZE;
+        marble->collision = MARBLE_NOT_HIT;
         marble->id = marbleid++;
         return marble;
     }else{
@@ -287,6 +288,7 @@ void loadBridge(block_t *block, double scale){
         addCollisionline(&block, cl);
     }
     // 最も下の辺
+    /*
     if((cl = newCollisionline(block->x + scale * STRAIGHT_LENGTH_UPPER_SIDE,
                               block->y + scale * STRAIGHT_BASE_HIGHEST,
                               block->z,
@@ -323,5 +325,6 @@ void loadBridge(block_t *block, double scale){
             continue;
         addCollisionline(&block, cl);
     }
+    */
 }
 

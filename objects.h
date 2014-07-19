@@ -16,6 +16,7 @@ typedef struct {
     double radius;  // 半径
     double r, g, b;
     int id;
+    int collision;  // 衝突しているか
 } marble_t;
 
 // あたり判定用の線

@@ -43,6 +43,8 @@ vector_t* hitVector(marble_t* marble, block_t* block){
     vector_t mvv;  // ビー玉の速度ベクトル
     double clmbl, mblv2;  // 計算用
 
+    double foot, radb;
+
     for(i=0; i<block->collisionlinesNum; i++){
         cl = block->collisionlines[i];
         // 当たり判定
@@ -60,14 +62,18 @@ vector_t* hitVector(marble_t* marble, block_t* block){
             mblv2 = dotProduct(mblv, mblv);
             if(mblv2 < clmbl){
                 /* 球の中心が線分の終点よりも遠くにある */
-                if(pow(length(vectorSub(mblv, clv)), 2) < (marble->radius*marble->radius)){
+                foot = pow(length(vectorSub(mblv, clv)), 2);
+                radb = marble->radius*marble->radius;
+                if( foot < ( radb )){
                     /* 距離と半径とを2乗で比較 */
                     // hit!
                     hit = 1;
                 }
             }else{
                 /* 球の中心から線分に下した足があるはず */
-                if((dotProduct(clv, clv)-(clmbl*clmbl)/mblv2) < (marble->radius*marble->radius)){
+                foot = dotProduct(clv, clv)-(clmbl*clmbl)/mblv2;
+                radb = marble->radius*marble->radius;
+                if((foot) < (rad2)){
                     /* 球の中心から線分に下した足の長さの2乗が半径の2乗よりも小さければhit */
                     // hit!
                     hit = 1;
