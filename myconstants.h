@@ -17,6 +17,7 @@
  */
 #define IS_HIT 1
 #define NOT_HIT 0
+#define NEAREST_POINT_TOLERANCE 0.000001  // 最近点許容値
 
 /*
    モデルの種類を示す定数

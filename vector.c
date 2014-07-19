@@ -71,9 +71,14 @@ void scalarMul(double scalar, vector_t* v){
 }
 
 // 正規化
-vector_t* normalize(vector_t* v){
+vector_t* vectorNormalize(vector_t* v){
     double size = length(v);
     return newVector(v->x/size, v->y/size, v->z/size);
+}
+
+void normalize(vector_t* normal, vector_t src){
+    double size = length(&src);
+    initVector(normal, src.x/size, src.y/size, src.z/size);
 }
 
 /*

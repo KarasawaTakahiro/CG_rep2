@@ -83,7 +83,7 @@ double foot, radb;
         if(hit){
             initVector(&mvv, marble->x, marble->y, marble->z);
             normal = vectorCrossProduct(&mvv, clv);
-            ndash = normalize(normal);
+            ndash = vectorNormalize(normal);
             inv = vectorScalarMul(-1.0, &mvv);
             p = vectorScalarMul(dotProduct(inv, ndash), ndash);
             v = vectorAdd(&mvv, p);
