@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 #include <math.h>
 #include "system.h"
+#include "vector.h"
 
 void xyzAxes(double length)
 {
@@ -85,5 +86,91 @@ double theta(double x1, double y1, double x2, double y2){
 
 double toDegree(double rad){
     return (rad * 180.0 / PI);
+}
+
+int isIntersected( double sx1, double sy1, double sz1, double ex1, double ey1, double ez1,
+                   double sx2, double sy2, double sz2, double ex2, double ey2, double ez2){
+    int res = 0;
+    double s, t;
+    s = ( (sx2 - sx1) * (ey2 - sy2) - (ex2 - sx2) * (sy2 - sy1) ) / ( (ex1 -sx1) * (ey2 - sy2) - (ex2 - sx2) * (ey1 - sy1) );
+    t = ( (sx1 - sx2) * (ey1 - sy1) - (ex1 - sx1) * (sy1 - sy2) ) / ( (ex2- sx2) * (ey1 - sy1) - (ex1 - sx1) * (ey2 - sy2) );
+    if((0<=s) && (s<=1) && (0<=t) && (t<=1)
+    && sz1 + s*(ez1 - sz1) == sz2 + t*(ez2 - sz2)){
+        res = 1;
+    }
+    return res;
+}
+
+double distVertex(vertex_t a, vertex_t b){
+    return ( sqrt((b.x - a.x) * (b.y - a.y) * (b.z - a.z)) );
+}
+
+// AB, CDの2直線の交点（最近点）を求める
+/*
+    戻り値
+    0 計算できず（平行 or A=B or C=D) OR 交点なし
+    1 交点あり resultAB, resultCDに交点を格納 NULLを渡すとキャンセル
+*/
+int intersect_lines(vertex_t* resultAB, vertex_t *resultCD,
+                    vertex_t A,  vertex_t B,  vertex_t C,  vertex_t D ){
+    vector_t AB, CD, uAB, uCD;
+    vector_t AC;
+    double work1, work2;
+    double d1, d2;
+    vertex_t npAB, npBC;
+
+    // A=B C=D のときは計算できない
+    if( distVertex( A,B ) == 0 || distVertex( C,D ) == 0 ) {
+        return 0;
+    }
+
+    initVector(&AB, B.x-A.x, B.y-A.y, B.z-A.z);
+    initVector(&CD, D.x-C.x, D.y-C.y, D.z-C.z);
+    normalize(&uAB, AB);
+    normalize(&uCD, CD);
+    
+    work1 = dotProduct(&uAB, &uCD);
+    work2 = 1 - work1 * work1;
+
+    // 直線が平行な時は計算できない
+    if( work2 == 0 ) { return 0; }
+
+    initVector(&AC, C.x-A.x, C.y-A.y, C.z-A.z);
+
+    d1 = ( dotProduct(&AC, &uAB) - work1 * dotProduct( &AC, &uCD) ) / work2;
+    d2 = ( work1 * dotProduct(&AC, &uAB) - dotProduct( &AC, &uCD) ) / work2;
+
+    // AB上の最近点
+    npAB.x = A.x + d1 * uAB.x;
+    npAB.y = A.y + d1 * uAB.y;
+    npAB.z = A.z + d1 * uAB.z;
+
+    // BC上の最近点
+    npBC.x = C.x + d2 * uCD.x;
+    npBC.y = C.y + d2 * uCD.y;
+    npBC.z = C.z + d2 * uCD.z;
+
+    // 交差の判定
+    if( distVertex(npAB, npBC) < 0.000001 ) {
+        // 交差した
+        if(resultAB != NULL){
+            resultAB->x = npAB.x; resultAB->y = npAB.y; resultAB->z = npAB.z;
+        }
+        if(resultCD != NULL){
+            resultCD->x = npBC.x; resultCD->y = npBC.y; resultCD->z = npBC.z;
+        }
+
+        return 1;
+    }
+
+    // 交差しなかった
+    return 0;
+}
+
+//
+void initVertex(vertex_t *v, double x, double y, double z){
+    v->x = x;
+    v->y = y;
+    v->z = z;
 }
 

@@ -53,6 +53,13 @@ vector_t* vectorAdd(vector_t* v1, vector_t* v2){
     return newVector(v2->x+v1->x, v2->y + v1->y, v2->z + v1->z);
 }
 
+// 加算
+void add(vector_t* v1, vector_t v2){
+    v1->x += v2.x;
+    v1->y += v2.y;
+    v1->z += v2.z;
+}
+
 // スカラー倍
 vector_t* vectorScalarMul(double scalar, vector_t* v){
     return (newVector(v->x * scalar, v->y * scalar, v->z * scalar));
@@ -64,9 +71,38 @@ void scalarMul(double scalar, vector_t* v){
 }
 
 // 正規化
-vector_t* normalize(vector_t* v){
+vector_t* vectorNormalize(vector_t* v){
     double size = length(v);
     return newVector(v->x/size, v->y/size, v->z/size);
 }
 
+void normalize(vector_t* normal, vector_t src){
+    double size = length(&src);
+    initVector(normal, src.x/size, src.y/size, src.z/size);
+}
+
+/*
+    2Dベクトル関数群
+ */
+void initVector2d(vector2d_t* v, double x, double y){
+    v->x = x;
+    v->y = y;
+}
+
+void showVector2d(vector2d_t v){
+    printf("(%.2f, %.2f)", v.x, v.y);
+}
+
+double length2d(vector2d_t v){
+    return (sqrt(v.x*v.x + v.y*v.y));
+}
+
+double dotProduct2d(vector2d_t v1, vector2d_t v2){
+    return ( v1.x * v2.x + v1.y * v2.y );
+}
+
+// なす角[rad]を返す
+double angleBetweenTwoVector2d(vector2d_t v1, vector2d_t v2){
+    return ( acos( dotProduct2d(v1, v2) / ( length2d(v1) * length2d(v2) ) ) );
+}
 

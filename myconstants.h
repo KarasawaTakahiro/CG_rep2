@@ -1,22 +1,36 @@
 
+/*
+    ビー玉に関する定義
+ */
 #define MARBLE_SIZE 0.25
 #define MARBLE_MAX_NUM 10
+#define MARBLE_NOT_HIT -1
 
+/*
+    ブロックに関する定義
+ */
 #define BLOCK_SHOW 1
 #define BLOCK_HIDE 0
 
 /*
-    モデルの種類を示す定数
-*/
+    衝突判定に関する定義
+ */
+#define IS_HIT 1
+#define NOT_HIT 0
+#define NEAREST_POINT_TOLERANCE 0.000001  // 最近点許容値
+
+/*
+   モデルの種類を示す定数
+ */
 #define MODEL_TYPE_POST 100
 #define MODEL_TYPE_STRAIGHT 101
 
 #define MODEL_MAX_DEVISION 3  // モデルの最大分割数
 
 /*
-    各モデルの数値を表す定数
-    メタセコイア上の実測値
-*/
+   各モデルの数値を表す定数
+   メタセコイア上の実測値
+ */
 
 // 柱パーツ
 #define POST_PATH "post_2.mqo"

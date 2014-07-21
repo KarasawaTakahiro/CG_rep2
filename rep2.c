@@ -112,10 +112,58 @@ void rotatePosition(double side, double updown){
     glRotated(side, 0.0, 1.0, 0.0);
 }
 
-void updateMarblePos(marble_t* marble){
+void updateMarblePos(marble_t* marble, block_t **blks, int blksNum){
     // ビー玉の座標の更新
     //x = v0t + 0.5at^2
 
+    int i, j;
+    block_t *block;
+    double nx, ny, nz;  // 次の座標
+    collisionline_t cl;
+    vector_t npos;
+    vertex_t A, B, C, D;
+    vertex_t intersectp;  // 交点座標
+    vector_t normal;
+
+
+    initVector(&npos, 0.0, 0.0, 0.0);
+    nx = marble->x + displacement(marble->vx, marble->ax, 1.0);
+    ny = marble->y + displacement(marble->vy, marble->ay, 1.0);
+    nz = marble->z + displacement(marble->vz, marble->az, 1.0);
+
+    for(j=0; j<blksNum; j++){
+        block = blks[j];
+        // 次の座標に行く途中で物にぶつかったら
+        for(i=0; i<block->collisionlinesNum; i++){
+            cl = *(block->collisionlines[i]);
+            initVertex(&A, marble->x, marble->y, marble->z);
+            initVertex(&B, nx, ny, nz);
+            initVertex(&C, cl.sx, cl.sy, cl.sz);
+            initVertex(&D, cl.ex, cl.ey, cl.ez);
+            if(intersect_lines(&intersectp, NULL, A, B, C, D) == 1){
+                // ぶつかった
+                // ぶつかった点に移動する
+                marble->x = intersectp.x; 
+                marble->y = intersectp.y;
+                marble->z = intersectp.z;
+                initVector(&normal, marble->x, marble->y, marble->z);
+                normalize(&normal, normal);
+                scalarMul(-1.0*(marble->radius), &normal);
+                marble->collision = block->id;
+            }else{
+                marble->x = nx;
+                marble->y = ny;
+                marble->z = nz;
+            }
+        }
+    }
+    if(marble->y < marble->radius){
+        marble->y = marble->radius;
+        marble->vy = marble->vy * field.e;
+    }
+
+
+    /*
     marble->x += displacement(marble->vx, marble->ax, 1.0);
     marble->y += displacement(marble->vy, marble->ay, 1.0);
     marble->z += displacement(marble->vz, marble->az, 1.0);
@@ -125,9 +173,10 @@ void updateMarblePos(marble_t* marble){
     if(fabs(marble->y - marble->radius) < 0.1){
         marble->vy = marble->vy * field.e;
     }
+    */
 }
 
-void updateMarbles(marble_t** mrbls, int num){
+void updateMarbles(marble_t** mrbls, int num, block_t **blks, int blksNum){
     // ビー玉の更新
     int i;
     marble_t* marble;
@@ -135,15 +184,8 @@ void updateMarbles(marble_t** mrbls, int num){
 
     for(i=0; i<num; i++){
         marble = mrbls[i];
-        v = calcHitVector(marble, blocks, blockNum);
-        printf("velocity: %.2f %.2f %.2f\n", v->x, v->y, v->z);
-        marble->ay = acceleration(-90.0);
-        marble->vx += v->x;
-        marble->vy += v->y;
-        marble->vz += v->z;
-        free(v);
-        marble->vy = velocity(marble->vy, marble->ay, 1.0);
-        updateMarblePos(marble);
+        updateSpeed(marble, blks, blksNum);
+        updateMarblePos(marble, blks, blksNum);
     }
 }
 
@@ -215,7 +257,7 @@ void myTimer(int value)
     {
         glutTimerFunc(samplingTime,myTimer,1);
 
-        updateMarbles(marbles, marbleNum);
+        updateMarbles(marbles, marbleNum, blocks, blockNum);
 
         glutPostRedisplay();
     }
@@ -239,7 +281,7 @@ void blockInit(){
     */
     //printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_POST, 0.0, 0.0, 3.0, 0.02));
 
-    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_STRAIGHT, 0.0, 0.0, 0.0, 0.02));
+    printf("createBlk id: %d\n", createBlock(&blocks, &blockNum, MODEL_TYPE_STRAIGHT, 0.0, 5.0, 0.0, 0.02));
 }
 
 int main(int argc, char** argv)

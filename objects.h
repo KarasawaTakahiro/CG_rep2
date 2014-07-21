@@ -16,12 +16,16 @@ typedef struct {
     double radius;  // 半径
     double r, g, b;
     int id;
+    int collision;  // 衝突しているか していれば衝突しているブロックIDを入れる
 } marble_t;
 
 // あたり判定用の線
 typedef struct {
     double sx, sy, sz;  // 始点座標 ワールド座標系で指定すること
     double ex, ey, ez;  // 終点座標 ワールド座標系で指定すること
+    int inclinationXY;  // 平面での斜度
+    int inclinationYZ;  // 平面での斜度
+    int inclinationXZ;  // 平面での斜度
 } collisionline_t;
 
 // モデル
@@ -57,6 +61,7 @@ block_t* newBlock(int modelType, double scale, double x, double y, double z);
 int createBlock(block_t*** blocks, int *blocksNum, int modelType, 
                 double x, double y, double z, double scale);
 void freeBlocks(block_t** blks, int num);
+block_t* getBlockById(block_t **blocks, int blocksNum, int id);
 // コリジョンライン
 collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, double ey, double ez);
 int addCollisionline(block_t** block, collisionline_t* cl);

@@ -2,6 +2,7 @@
 #include "system.h"
 #include "objects.h"
 #include "GLMetaseq.h"
+#include "vector.h"
 
 // ビー玉の定義
 int marbleid = 1;
@@ -17,6 +18,7 @@ marble_t* newMarble(double x, double y, double z, double r, double g, double b){
         marble->ax = marble->ay = marble->az = 0.0;
         marble->vx = marble->vy = marble->vz = 0.0;
         marble->radius = MARBLE_SIZE;
+        marble->collision = MARBLE_NOT_HIT;
         marble->id = marbleid++;
         return marble;
     }else{
@@ -160,6 +162,18 @@ void freeBlocks(block_t** blks, int num){
     }
 }
 
+// idからブロックを得る
+block_t* getBlockById(block_t **blocks, int blocksNum, int id){
+    int i;
+
+    for(i=0; i<blocksNum; i++){
+        if(blocks[i]->id == id){
+            return blocks[i];
+        }
+    }
+    return NULL;
+}
+
 // モデルの描画関数
 void callModel(block_t* block){
     int i;
@@ -180,6 +194,7 @@ void deleteModel(block_t* block){
 // あたり判定用の線
 collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, double ey, double ez){
     collisionline_t* line;
+    vector2d_t v1, v2;
     if((line = (collisionline_t*) malloc(sizeof(collisionline_t))) != NULL){
         line->sx = sx;
         line->sy = sy;
@@ -187,6 +202,17 @@ collisionline_t* newCollisionline(double sx, double sy, double sz, double ex, do
         line->ex = ex;
         line->ey = ey;
         line->ez = ez;
+        // 角度の算出
+        initVector2d(&v1, sx, sy);
+        initVector2d(&v2, ex, ey);
+        line->inclinationXY = (int) toDegree( angleBetweenTwoVector2d(v1, v2) );
+        initVector2d(&v1, sy, sz);
+        initVector2d(&v2, ey, ez);
+        line->inclinationYZ = (int) toDegree( angleBetweenTwoVector2d(v1, v2) );
+        initVector2d(&v1, sx, sz);
+        initVector2d(&v2, ex, ez);
+        line->inclinationXZ = (int) toDegree( angleBetweenTwoVector2d(v1, v2) );
+
         printf("new collisionline: (%.2f, %.2f, %.2f) to (%.2f, %.2f, %.2f)\n", sx, sy, sz, ex, ey, ez);
         return line;
     }else{
@@ -276,6 +302,7 @@ void loadBridge(block_t *block, double scale){
     printf("stright block pos: %.2f %.2f %.2f\n", block->x, block->y, block->z);
     // 通路部分のコリジョンラインの定義
     corrz = scale * STRAIGHT_RADIUS * cos(asin(scale * STRAIGHT_RADIUS/(scale * STRAIGHT_RADIUS/scale * STRAIGHT_GROOVE_DEPTH)));
+    /*
     // 最も手前の辺
     if((cl = newCollisionline(block->x + scale * STRAIGHT_LENGTH_UPPER_SIDE,
                               block->y + scale * STRAIGHT_BASE_HIGHEST + scale * STRAIGHT_GROOVE_DEPTH,
@@ -286,6 +313,7 @@ void loadBridge(block_t *block, double scale){
                               ) != NULL){
         addCollisionline(&block, cl);
     }
+    */
     // 最も下の辺
     if((cl = newCollisionline(block->x + scale * STRAIGHT_LENGTH_UPPER_SIDE,
                               block->y + scale * STRAIGHT_BASE_HIGHEST,
@@ -296,6 +324,7 @@ void loadBridge(block_t *block, double scale){
                               ) != NULL){
         addCollisionline(&block, cl);
     }
+    /*
     // 最も奥の辺
     if((cl = newCollisionline(block->x + scale * STRAIGHT_LENGTH_UPPER_SIDE,
                               block->y + scale * STRAIGHT_BASE_HIGHEST + scale * STRAIGHT_GROOVE_DEPTH,
@@ -323,5 +352,6 @@ void loadBridge(block_t *block, double scale){
             continue;
         addCollisionline(&block, cl);
     }
+    */
 }
 
