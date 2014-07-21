@@ -1,5 +1,5 @@
-CG_rep2
-=======
+The Rolling Marbles
+====================
 
 report at Computer Graphics  
 OpenGL + Metasequoia for windows  
